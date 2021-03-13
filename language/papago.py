@@ -1,11 +1,8 @@
 import urllib.request
 import json
+import private
 
-ID = [('1hOgDvpgHUEvXcEcvkyE', 'wA4E8MYnEZ'),
-      ('bsq_8atcMq6DUG3XtwY_', 'qNXIPDgzEY'),
-      ('sp0K4TjW3gOCiDu5NOTh', '4URVCW400p'),
-      ('r90GE8cK6e6TcHJaA2l9', 'RpRAGrlWKS'),
-      ('sv5pv23KcFTvwVnJdqXK', 'r5NL1ddDIp')]
+ID = private.papago_keys
 
 id_num = 4
 client_id, client_secret = ID[id_num]
