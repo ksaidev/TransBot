@@ -4,7 +4,7 @@ import private
 
 ID = private.papago_keys
 
-id_num = 4
+id_num = 0
 client_id, client_secret = ID[id_num]
 
 
