@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "transbot-worddb",
+  "private_key_id": "08689e2310b15c7623d1be235eff6a7d252c2852",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCyrheNqyzA5aL7\n9MWcUMmFFv8IAMnDvABuTwMxNy53QfALvfeG+OpZRnkvXjaSQYxk5Ox7xkxuxfyS\nZQnns7aC/Oi43nQF8Bx8FRJTzEZz+fAZFNn08Dyzt4VRxsFSnFi3pWz3tNvoJSvp\nsDO+ut+3IrSThPhz9hnqeoU9w1ogzoSMh97/r++DrxNXE38BYC8/K22NA6bkyxYz\n+jJiHDaRMlx0ZdM3BrTLquU0whabMfidt6TUB11cCPrB4aVlKmIFegeJmNSldJzn\n3qm1bTsESBmlWu13PCam6qJruMlABKOpVgTfIuPd1XvuGirMPQEisgtMbD7604Yy\np5xvk58TAgMBAAECggEAJ/xBlRh7WWeKQ6wRFNwXXMs6o0XZ4Q2PYyAXbMoWgeWl\nnFsUq4XEm9njgLAqsiwtCN8Z9ND5hciUrwYhY1KaQ1HpmoVdnX6QQUxN36bVFVsX\nWeWKqP+h9e3ZzeUWmjAWwnIoon48wAShgRhHXCVhrw/7LRASsZCfWBO3AY1X/AMa\nzARK3t6E0veFGNNlsxTGa2mT4w1l1/l+WoB0Ybj9oidARwIn1D1ftBv/llXR/7zy\nUj7wD4Qmlp9ukx3/x4qAngvvfbmUljyr6CW5dMSYklyKguD54h+PVGpGy1zaZPVv\n8XOjg60QMsBz/bVdHAj5n/8MiB67xyJbDUcIuSat0QKBgQDw295uptrRZUxxdiPC\nOMosWVcl76jprQHnD+4O9kssWtbEU4NquH1vv25WAdgqul6Lny6Cv7sNxsW+2rK5\nXaGeZfm+M+4x7UWSbXRwdC+eOuzRm96mMzw3XDKIAROIPrF4rU3G52mKk8Q5lzKW\n0AUKcqzUht0u3QQnv8MCQ2lATwKBgQC96ZUJGImlaBNiTN8lTDnSKMDG41PzaQWB\nCpVbWE/8geOZRqZzsZbruGvVbu+AU32vIRNE8ndIuiDBmfNrJbEwHaidyhwf8n9e\nLgB8cwW7YvGyPtaCWadyGkUfB/WNf2zYrzxqqlEkgfKzBz/sNwqnzrHxWVBLm0bU\nfPsMvwKf/QKBgHOs9QfphL/6SZtYZNYbliV0huFGV7Zai8ZgJTH0YagcvHavsTbp\nAf1QT/poilwDA/NEcP8EfB6ir0f5GsrhyAQd77LEmApMbRRlEv4LHu98V05X8Leb\ndbkUw4QEGFBf47YUbX0wmMSgMSaDkh1SLImXB6BOYR3nsd4xP8PvgjYLAoGAAtKL\n4ny43vpy/00BK/68BUGRy+LpBn8TE93iZl8joS8VANwp8SI8ifhNsfhaGuAiyA2H\nyciIuU362qW9FmSTA5INRXsRe/AQsIeifjb/aM+JpAqHCZznfiyhxlpJ7fZs2bOR\nBEzPs+kygDKlYo9W2zOZNWsMZHNEVDgfSwszsMkCgYEAzTd97fSaFikZsqiiwk7A\nLaxyy7JxDE1ZPj2EzfuQErgo1FlcEi9rMSJj0LSjdRV27LR3NZG+/Qrpq+3rXUmJ\nCOpDmadiiR90OHYi9xFzo2xwEeC682FWb6/yNaKb0TGmM8UPeqIm6CrslGDXhUmT\nKjvJfe1Nnlwi6jR9kKiboMU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "transbot@transbot-worddb.iam.gserviceaccount.com",
+  "client_id": "104441013389686013042",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/transbot%40transbot-worddb.iam.gserviceaccount.com"
+}
