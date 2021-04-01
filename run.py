@@ -14,7 +14,7 @@ while True:
         pass
 
     except Exception as e:
-        print(present_time() + e)
+        print(present_time() + str(e))
 
     print(present_time() + 'Connection Reset')
     time.sleep(5)
