@@ -3,6 +3,7 @@ from language.interpret import interpreter
 
 import text
 
+
 def respond(chat):
     chatId = chat.channel.chatId
     message = chat.message
@@ -14,7 +15,6 @@ def respond(chat):
         return [text.engHelpMsg]
     if message in ['/등록', '/reg']:
         return [text.alreadyRegistered]
-
 
     # Mode change
     if message in ['/수동', '/ㅅ', '/manual', '/m']:
@@ -32,7 +32,6 @@ def respond(chat):
         else:
             mode.activate(chatId)
             return [text.changeToAuto]
-
 
     # Manual Translation
     if message in ['/번역', '/ㅂ', '/translate', '/tr']:
@@ -80,9 +79,6 @@ def register(chat):
 def translatable(chat):
     if chat.type in [1, 26]:
         return True
-    
+
     message = chat.message
     # TODO
-
-
-

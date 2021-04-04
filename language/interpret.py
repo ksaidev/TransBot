@@ -21,12 +21,7 @@ def letterLang(letter):
 
 
 def isKoreanString(input_s):
-    cnt = 0
-    for c in input_s:
-        cnt += letterLang(c)
-
-    return cnt >= 0
-
+    return sum(letterLang(c) for c in input_s) >= 0
 
 
 def interpreter(string):

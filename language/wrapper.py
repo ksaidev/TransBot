@@ -16,11 +16,7 @@ dictDoubleWord = ['가', '갸', '거', '겨', '고', '교', '구', '규', '그',
 
 def isKorLetter(letter):
     order = ord(letter.lower())
-    if ord('가') <= order <= ord('힣') or ord('ㄱ') <= order <= ord('ㆌ'):
-        return True
-
-    else:
-        return False
+    return ord('가') <= order <= ord('힣') or ord('ㄱ') <= order <= ord('ㆌ')
 
 
 def wrap(string):
@@ -47,7 +43,6 @@ def wrap(string):
             index += 1
             key = ''
 
-
         if isKor:
             key += letter
         else:
@@ -58,5 +53,3 @@ def wrap(string):
 
     res_str = res_str[:-1]
     return res_str, replacement
-
-

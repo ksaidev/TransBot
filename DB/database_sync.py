@@ -7,14 +7,15 @@ import private
 
 
 scope = [
-'https://spreadsheets.google.com/feeds',
-'https://www.googleapis.com/auth/drive',
+    'https://spreadsheets.google.com/feeds',
+    'https://www.googleapis.com/auth/drive',
 ]
 
 json_file_name = './DB/transbot-worddb-key.json'
-#json_file_name = 'transbot-worddb-key.json' # for local testing
+# json_file_name = 'transbot-worddb-key.json' # for local testing
 
-credentials = ServiceAccountCredentials.from_json_keyfile_name(json_file_name, scope)
+credentials = ServiceAccountCredentials.from_json_keyfile_name(
+    json_file_name, scope)
 gc = gspread.authorize(credentials)
 
 
@@ -41,7 +42,8 @@ def colorRow(sheet, row, color):
 
 
 def colorAllWhite(sheet, total):
-    sheet.format(f'A2:D{total + 1}', {"backgroundColor": {"red": 1, "green": 1, "blue": 1}})
+    sheet.format(f'A2:D{total + 1}',
+                 {"backgroundColor": {"red": 1, "green": 1, "blue": 1}})
 
 
 def sync():

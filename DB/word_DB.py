@@ -1,7 +1,8 @@
 import sqlite3
 
 db_dir = './DB/words.db'
-#db_dir = 'words.db'  # for local testing
+# db_dir = 'words.db'  # for local testing
+
 
 def write(sheet_name, pair):  # [kor, eng, sy_kor, sy_eng]
     conn = sqlite3.connect(db_dir)
@@ -52,6 +53,7 @@ def read(sheet_name):
 
     c.execute(f'SELECT * FROM {sheet_name}')
     res = c.fetchall()
+    conn.close()
 
     return res
 
