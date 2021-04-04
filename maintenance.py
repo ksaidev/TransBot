@@ -4,6 +4,7 @@ import private
 
 temp_disabled = []
 
+
 class MyClass(client.Client):
     async def onMessage(self, chat):
         if chat.type in [1, 26]:
@@ -34,7 +35,6 @@ def noticeMsg(input_str):
                'Server maintenance/update in progress. Will be available shortly.'
 
     return None
-
 
 
 if __name__ == '__main__':

@@ -2,6 +2,7 @@ import sqlite3
 
 db_dir = './DB/chatroom_list.db'
 
+
 def read(chatId):
     conn = sqlite3.connect(db_dir)
     c = conn.cursor()
@@ -9,11 +10,7 @@ def read(chatId):
     c.execute(f'SELECT status FROM chatroom WHERE chatId={chatId}')
     res = c.fetchone()
 
-    if res is None:
-        return None
-
-    else:
-        return res[0]
+    return res[0] if res is not None else None
 
 
 def write(chatId, mode):
@@ -32,22 +29,22 @@ def write(chatId, mode):
     conn.commit()
     conn.close()
 
+
 def activate(chatId):
     write(chatId, 1)
 
+
 def deactivate(chatId):
     write(chatId, 0)
+
 
 def isRegistered(chat):
     chatId = chat.chatId
     status = read(chatId)
     return status is not None
 
+
 def isActivated(chat):
     chatId = chat.chatId
     status = read(chatId)
     return status == 1
-
-
-
-

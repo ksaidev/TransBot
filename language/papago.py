@@ -38,6 +38,7 @@ def api_request(string, to_eng):
     else:
         return 'translate error'
 
+
 def translate(string, to_eng):
     for _ in ID:
         try:
@@ -53,11 +54,9 @@ def translate(string, to_eng):
 def kor(string):
     return translate(string, False)
 
+
 def eng(string):
     return translate(string, True)
-
-
-###################################################
 
 
 def letterLang(letter):
@@ -85,14 +84,11 @@ def isKoreanString(input_s):
     return k_count >= e_count
 
 
-
-
 async def trans(string):
     if isKoreanString(string):
         return eng(string)
     else:
         return kor(string)
-
 
 
 if __name__ == '__main__':
