@@ -131,6 +131,7 @@ dmypy.json
 # Custom
 *.db
 *.pptx
+*.bat
 
 plans.txt
 private.py
