@@ -134,3 +134,4 @@ dmypy.json
 
 plans.txt
 private.py
+DB/transbot-worddb-key.json
