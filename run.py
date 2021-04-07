@@ -1,4 +1,5 @@
 import time
+import importlib as imp
 
 def present_time():
     now = time.localtime()
@@ -8,7 +9,7 @@ def present_time():
 while True:
     try:
         print(present_time() + 'Server start')
-        import Main
+        imp.reload(imp.import_module('main.py'))
 
     except ConnectionResetError:
         pass
