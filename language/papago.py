@@ -1,95 +1,54 @@
-import urllib.request
-import json
 import private
+import requests
 
-ID = private.papago_keys
+class PapagoAPI:
+    _keys = private.papago_keys
+    _keyNumber = len(_keys)
 
-id_num = 0
-client_id, client_secret = ID[id_num]
+    def __init__(self):
+        self._idSeq = 0
+        self._clientId, self._clientSecret = PapagoAPI._keys[self._idSeq]
 
+    def getTranslatedText(self, text, target):
+        assert target in ['ko', 'en']
 
-def change_id():
-    global id_num
-    global client_id, client_secret
+        for _ in range(PapagoAPI._keyNumber):
+            result = self._apiRequest(text, target)
+            if result is not None:
+                return result
+            self._switchId()
 
-    id_num = (id_num+1) % len(ID)
-    client_id, client_secret = ID[id_num]
-
-
-def api_request(string, to_eng):
-    encText = urllib.parse.quote(string)
-    if to_eng:
-        data = "source=ko&target=en&text=" + encText
-    else:
-        data = "source=en&target=ko&text=" + encText
-    url = "https://openapi.naver.com/v1/papago/n2mt"
-    request = urllib.request.Request(url)
-    request.add_header("X-Naver-Client-Id", client_id)
-    request.add_header("X-Naver-Client-Secret", client_secret)
-    response = urllib.request.urlopen(request, data=data.encode("utf-8"))
-    rescode = response.getcode()
-
-    if rescode == 200:
-        response_body = response.read()
-
-        res = json.loads(response_body.decode('utf-8'))
-        return res['message']['result']['translatedText']
-
-    else:
-        return 'translate error'
+        raise Exception('API limit exceeded')
 
 
-def translate(string, to_eng):
-    for _ in ID:
+    def _apiRequest(self, text, target):
+        source = 'ko' if target == 'en' else 'en'
+
+        request_url = 'https://openapi.naver.com/v1/papago/n2mt'
+        headers = {'X-Naver-Client-Id': self._clientId,
+                   'X-Naver-Client-Secret': self._clientSecret}
+        params = {'source': source, 'target': target, 'text': text}
         try:
-            translated_str = api_request(string, to_eng)
-            return translated_str
+            response = requests.post(request_url, headers=headers, data=params)
 
-        except Exception as e:
-            change_id()
+            if response.status_code == 200:
+                result = response.json()
+                return result['message']['result']['translatedText']
 
-    return 'api key error'
+            else:
+                raise Exception('Papago API error')
 
-
-def kor(string):
-    return translate(string, False)
-
-
-def eng(string):
-    return translate(string, True)
+        except requests.HTTPError:
+            return None
 
 
-def letterLang(letter):
-    assert len(letter) == 1, 'input value must be a single letter'
-
-    if ord('가') <= ord(letter) <= ord('힣'):
-        return 'kor'
-
-    elif ord('a') <= ord(letter.lower()) <= ord('z'):
-        return 'eng'
-
-    else:
-        return None
-
-
-def isKoreanString(input_s):
-    k_count = 0
-    e_count = 0
-    for c in input_s:
-        if letterLang(c) == 'kor':
-            k_count += 1
-        elif letterLang(c) == 'eng':
-            e_count += 1
-
-    return k_count >= e_count
-
-
-async def trans(string):
-    if isKoreanString(string):
-        return eng(string)
-    else:
-        return kor(string)
+    def _switchId(self):
+        self._idSeq += 1
+        self._idSeq %= PapagoAPI._keyNumber
+        self._clientId, self._clientSecret = PapagoAPI._keys[self._idSeq]
 
 
 if __name__ == '__main__':
-    print(kor('hello 순호'))
+    t = PapagoAPI()
+
+    print(t.getTranslatedText('안녕', 'en'))
