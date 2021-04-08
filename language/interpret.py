@@ -1,8 +1,36 @@
-import language.papago as translate_to
+from language.papago import PapagoAPI
 from language.wrapper import wrap
 import DB.word_DB as WordDB
 import re
 
+#TODO
+
+# class Translator:
+#     def __init__(self):
+#         pass
+#
+#     def translate(self):
+#         pass
+#
+#
+#
+#     @staticmethod
+#     def _isKorean(string):
+#         letters = string.split()
+#         total = len(letters)
+#         korCount = 0
+#
+#         for letter in letters:
+#             if re.search('[ㄱ-ㅎㅏ-ㅣ가-힣]', letter) is not None:
+#                 korCount += 1
+#
+#         return korCount >= total // 2
+
+
+
+
+
+api = PapagoAPI()
 
 def letterLang(letter):
     assert len(letter) == 1, 'input value must be a single letter'
@@ -30,7 +58,7 @@ def interpreter(string):
         for key in data:
             string = string.replace(key, data[key])
 
-        return translate_to.eng(string)
+        return api.getTranslatedText(string, 'en')
 
     else:
         data = WordDB.en_ko()
@@ -39,7 +67,7 @@ def interpreter(string):
 
         wrapped_str, subst_dict = wrap(string)
 
-        res = translate_to.kor(wrapped_str)
+        res = api.getTranslatedText(string, 'ko')
 
         for key in subst_dict:
             res = res.replace(key, subst_dict[key])
