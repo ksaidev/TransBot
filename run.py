@@ -17,6 +17,6 @@ while True:
     except Exception as e:
         print(present_time() + str(e))
 
-    print(present_time() + 'Connection Reset')
+    print(present_time() + 'Server reload')
     time.sleep(5)
 

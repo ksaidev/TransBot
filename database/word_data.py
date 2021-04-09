@@ -1,6 +1,49 @@
 import sqlite3
 
-db_dir = './DB/words.db'
+
+class WordDB:
+    class Local:
+        def __init__(self, dir):
+            self._dir = dir
+
+        def _writeCommand(self, command):
+            conn = sqlite3.connect(self._dir)
+            c = conn.cursor()
+
+            c.execute(command)
+
+            conn.commit()
+            conn.close()
+
+        def _readCommand(self, command):
+            conn = sqlite3.connect(self._dir)
+            c = conn.cursor()
+
+            c.execute(command)
+            result = c.fetchall()
+
+            conn.close()
+            return result
+
+
+
+
+    class Remote:
+        pass
+
+    def __init__(self, local_dir='./database/words.db'):
+        self.local = self.Local(dir=local_dir)
+        self.remote = self.Remote()
+        # 이거 넣는게 맞는건지...?
+
+    def sync(self):
+        pass
+
+
+
+"""These are old versions from now"""
+
+db_dir = './database/words.db'
 # db_dir = 'words.db'  # for local testing
 
 
@@ -71,7 +114,7 @@ def deleteAll(sheet_name):
 def ko_en():
     res = dict()
 
-    # read KSA word DB
+    # read KSA word database
     for pair in read('ksa_words'):
         kor, eng, synonyms, _ = pair
         res[kor] = eng
@@ -83,7 +126,7 @@ def ko_en():
                 kor_synonym = key.strip()
                 res[kor_synonym] = eng
 
-    # read general(ko_en) DB
+    # read general(ko_en) database
     for pair in read('ko_en'):
         kor, eng = pair
         res[kor] = eng
@@ -94,7 +137,7 @@ def ko_en():
 def en_ko():
     res = dict()
 
-    # read KSA word DB
+    # read KSA word database
     for pair in read('ksa_words'):
         kor, eng, _, synonyms = pair
         res[eng.lower()] = kor
@@ -106,7 +149,7 @@ def en_ko():
                 eng_synonym = key.strip()
                 res[eng_synonym.lower()] = kor
 
-    # read general(en_ko) DB
+    # read general(en_ko) database
     for pair in read('en_ko'):
         eng, kor = pair
         res[eng.lower()] = kor
