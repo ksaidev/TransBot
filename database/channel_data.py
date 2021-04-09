@@ -1,6 +1,6 @@
 import sqlite3
 
-db_dir = './DB/chatroom_list.db'
+db_dir = './database/channel.db'
 
 
 def read(chatId):
@@ -36,6 +36,13 @@ def activate(chatId):
 
 def deactivate(chatId):
     write(chatId, 0)
+
+# delete activate, deactivate and replace with this
+def setMode(chatId, mode):
+    assert mode in ('auto', 'manual')
+    key = 1 if mode == 'auto' else 0
+    write(chatId, 0)
+
 
 
 def isRegistered(chat):
