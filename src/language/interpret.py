@@ -1,30 +1,39 @@
 from language.papago import PapagoAPI
 from language.wrapper import wrap
-import DB.word_DB as WordDB
+import database.word_data as WordDB
 import re
 
 #TODO
 
-# class Translator:
-#     def __init__(self):
-#         pass
-#
-#     def translate(self):
-#         pass
-#
-#
-#
-#     @staticmethod
-#     def _isKorean(string):
-#         letters = string.split()
-#         total = len(letters)
-#         korCount = 0
-#
-#         for letter in letters:
-#             if re.search('[ㄱ-ㅎㅏ-ㅣ가-힣]', letter) is not None:
-#                 korCount += 1
-#
-#         return korCount >= total // 2
+class Translator:
+    def __init__(self):
+        self.api = PapagoAPI()
+        pass
+
+    def translate(self, text):
+        if self._isKorean(text):
+            pass
+
+        else:
+            pass
+
+
+    def replaceKey(self):
+        pass
+
+
+
+    @staticmethod
+    def _isKorean(text):
+        letters = text.split()
+        total = len(letters)
+        korCount = 0
+
+        for letter in letters:
+            if re.search('[ㄱ-ㅎㅏ-ㅣ가-힣]', letter) is not None:
+                korCount += 1
+
+        return korCount >= total // 2
 
 
 

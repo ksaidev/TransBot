@@ -1,4 +1,6 @@
 # Messages (constants)
+# TODO : 변수 이름 CAPITAL_LETTER 으로 바꾸기 (naming convention)
+
 welcomeMsg = ["안녕하세요! 카톡 통역봇 TransBot이에요!\nHello! I'm your KakaoTalk translator, TransBot!",
               "도움말을 보시려면 '/도움말'을 입력해주세요.\nType '/help' for help."]
 alreadyRegistered = "이 채팅방은 이미 등록되어 있습니다.\n" \
