@@ -1,4 +1,4 @@
-import private
+from data import private
 import requests
 
 class PapagoAPI:
