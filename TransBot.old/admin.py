@@ -1,5 +1,5 @@
-from DB.database_sync import sync
-import private
+from src.data.sync_tomerge import sync
+from data import private
 
 ADMIN_ROOMS = private.admin_rooms
 
