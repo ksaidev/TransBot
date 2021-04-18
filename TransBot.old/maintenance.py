@@ -1,6 +1,6 @@
 from kakaoPy import client
-from DB import mode
-import private
+from src.data import channel_db
+from data import private
 
 temp_disabled = []
 
@@ -16,7 +16,7 @@ class MyClass(client.Client):
             else:
                 chatId = chat.chatId
                 if chatId not in temp_disabled:
-                    if mode.isActivated(chat) or not mode.isRegistered(chat):
+                    if channel_db.isActivated(chat) or not channel_db.isRegistered(chat):
                         await chat.sendText(notice)
                         temp_disabled.append(chat.chatId)
 
