@@ -8,27 +8,26 @@ from src.constants.mode import Mode
 class Responder:
     def __init__(self, chat):
         self.channel = BotChannel(chat.channel)
-        self.command = Command.get_type(chat.message)
+        self.command = Command.get_function(chat.message)
+        # if self.channel.is_admin():
+        #     self.command = Command.get_function(chat.message, admin=True)
+        # else:
+        #     self.command = Command.get_function(chat.message)
+
 
     async def respond(self):
         try:
-            await self.run_command()
+            await self.command(self)
         except BotException as error:
             await self.send_text(error.notify_message)
 
-    async def run_command(self):
-        return getattr(self, self.command)()
 
     async def send_text(self, text):
         await self.channel.sendText(text)
 
-    # command decorators
-    class Scope:
-        def __init__(self):
 
-
-    # command functions
-    async def register(self):
+    @Command(Command.REGISTER, allow_unregistered=True)
+    async def _register(self):
         if self.channel.mode != Mode.UNREGISTERED:
             raise RegistrationError(registered=True)
 
@@ -37,17 +36,17 @@ class Responder:
 
 
     @Command(Command.HELP_KO)
-    async def help_ko(self):
+    async def _help_ko(self):
         await self.send_text(messages.HELP_KOR)
 
 
     @Command(Command.HELP_EN)
-    async def help_en(self):
+    async def _help_en(self):
         await self.send_text(messages.HELP_ENG)
 
 
     @Command(Command.SET_AUTO)
-    async def set_auto(self):
+    async def _set_auto(self):
         if self.channel.mode == Mode.AUTO:
             raise ModeSetError(Mode.AUTO)
 
@@ -56,7 +55,7 @@ class Responder:
 
 
     @Command(Command.SET_MANUAL)
-    async def set_manual(self):
+    async def _set_manual(self):
         if self.channel.mode == Mode.MANUAL:
             raise ModeSetError(Mode.MANUAL)
 
@@ -65,23 +64,23 @@ class Responder:
 
 
     @Command(Command.AUTO_TRANSLATE)
-    async def auto_translate(self):
+    async def _auto_translate(self):
         if self.channel.mode == Mode.MANUAL:
             return
 
         # main script goes here
 
     @Command(Command.MANUAL_TRANSLATE)
-    async def manual_translate(self):
+    async def _manual_translate(self):
         # 자동일때도 작동되네
 
 
 
 
     @Command(Command.SYNC)
-    async def sync(self):
+    async def _sync(self):
         if not self.channel.is_admin():
-            await self.auto_translate()
+            await self._auto_translate()
 
 
 

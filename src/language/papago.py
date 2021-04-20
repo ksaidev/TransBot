@@ -2,7 +2,7 @@ from data import private
 import requests
 
 class PapagoAPI:
-    _keys = private.papago_keys
+    _keys = private.PAPAGO_KEYS
     _keyNumber = len(_keys)
 
     def __init__(self):

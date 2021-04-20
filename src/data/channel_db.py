@@ -1,52 +1,27 @@
-import sqlite3
+from src.data.accessor import Database
+from src.constants.mode import Mode
 
-class ChannelDatabase:
-    def __init__(self, dir='./database/channel.db'):
-        self._dir = dir
+class ChannelDatabase(Database):
+    def __init__(self, dir='./data/channel.db'):
+        super().__init__(dir)
 
-    def _readStatus(self, chatId):
-        conn = sqlite3.connect(self._dir)
-        c = conn.cursor()
+    def get_mode(self, chat_id):
+        res = super()._read_command(
+            f'SELECT status FROM chatroom WHERE chatId={chat_id}'
+        )[0]
+        return res[0] if res is not None else -1
 
-        c.execute(f'SELECT status FROM chatroom WHERE chatId={chatId}')
-        res = c.fetchone()
+    def add_channel(self, chat_id):
+        status = Mode.AUTO
+        super()._write_command(
+            f'INSERT INTO chatroom values({chat_id}, {status})'
+        )
 
-        conn.close()
-        return res[0] if res is not None else None
-
-
-    def _writeStatus(self, chatId, status):
-        assert status in (0, 1)  # 0 : manual, 1 : auto
-        conn = sqlite3.connect(self._dir)
-        c = conn.cursor()
-
-        c.execute(f'SELECT status FROM chatroom WHERE chatId={chatId}')
-
-        if c.fetchone() is None:
-            c.execute(f'INSERT INTO chatroom values({chatId}, {status})')
-
-        else:
-            c.execute(f'UPDATE chatroom SET status={status} WHERE chatId={chatId}')
-
-        conn.commit()
-        conn.close()
-
-
-    def setMode(self, chatId, mode):
-        assert mode in ('auto', 'manual')
-        status = 1 if mode == 'auto' else 0
-        self._writeStatus(chatId, status)
-
-
-    def isRegistered(self, chatId):
-        status = self._readStatus(chatId)
-        return status is not None
-
-
-    def isAutoMode(self, chatId):
-        status = self._readStatus(chatId)
-        return status == 1
-
+    def set_mode(self, chat_id, status):
+        assert status in (Mode.AUTO, Mode.MANUAL)
+        super()._write_command(
+            f'UPDATE chatroom SET status={status} WHERE chatId={chat_id}'
+        )
 
 
 
