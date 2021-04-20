@@ -1,6 +1,6 @@
-from language.papago import PapagoAPI
-from language.wrapper import wrap
-import database.word_data as WordDB
+from src.language.papago import PapagoAPI
+from src.language.wrapper import wrap
+import src.data.word_db as WordDB
 import re
 
 #TODO
