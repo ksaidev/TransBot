@@ -1,5 +1,5 @@
 from src.script.command import Command
-from src.script.channel import BotChannel
+from src.script.channel_manager import ChannelManager
 from src.script.exceptions import *
 from src.constants import messages
 from src.constants.mode import Mode
@@ -7,7 +7,7 @@ from src.constants.mode import Mode
 
 class Responder:
     def __init__(self, chat):
-        self.channel = BotChannel(chat.channel)
+        self.channel = ChannelManager(chat.channel)
         self.command = Command.get_function(chat.message)
         # if self.channel.is_admin():
         #     self.command = Command.get_function(chat.message, admin=True)

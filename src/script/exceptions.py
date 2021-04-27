@@ -1,17 +1,15 @@
 from src.constants import messages
 from src.constants.mode import Mode
 
+
 class BotException(Exception):
+    """
+    An abstract class to handle errors of the bot.
+    Each BotException should have a notifier message which will be delivered to the user.
+    """
     def __init__(self, notify_message):
         super().__init__()
         self.notify_message = notify_message
-
-
-class RegistrationError(BotException):
-    def __init__(self, registered):
-        notify_message = messages.ERROR_REGISTERED if registered \
-            else messages.ERROR_UNREGISTERED
-        super().__init__(notify_message)
 
 class ModeSetError(BotException):
     def __init__(self, mode):
@@ -24,5 +22,10 @@ class ManualSelectionError(BotException):
     def __init__(self):
         super().__init__(messages.ERROR_MSG_UNSELECTED)
 
+class ApiLimitExceeded(BotException):
+    def __init__(self):
+        super().__init__(messages.ERROR_API_LIMIT_EXCEEDED)
 
-__all__ = [BotException, RegistrationError, ModeSetError, ManualSelectionError]
+class UndefinedError(BotException):
+    def __init__(self):
+        super().__init__(messages.ERROR_UNDEFINED)

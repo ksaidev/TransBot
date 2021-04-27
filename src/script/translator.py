@@ -1,6 +1,6 @@
-from src.language.papago import PapagoAPI
-from src.language.wrapper import wrap
-import src.data.word_db as WordDB
+from src.module.papago import PapagoAPI
+# from src.script.will_be_deleted.wrapper import wrap
+from src.data.word_db import WordDatabase
 import re
 
 #TODO
@@ -11,7 +11,7 @@ class Translator:
         pass
 
     def translate(self, text):
-        if self._isKorean(text):
+        if self._is_korean(text):
             pass
 
         else:
@@ -24,7 +24,7 @@ class Translator:
 
 
     @staticmethod
-    def _isKorean(text):
+    def _is_korean(text):
         letters = text.split()
         total = len(letters)
         korCount = 0
@@ -67,7 +67,7 @@ def interpreter(string):
         for key in data:
             string = string.replace(key, data[key])
 
-        return api.getTranslatedText(string, 'en')
+        return api.get_translated_text(string, 'en')
 
     else:
         data = WordDB.en_ko()
@@ -76,7 +76,7 @@ def interpreter(string):
 
         wrapped_str, subst_dict = wrap(string)
 
-        res = api.getTranslatedText(string, 'ko')
+        res = api.get_translated_text(string, 'ko')
 
         for key in subst_dict:
             res = res.replace(key, subst_dict[key])

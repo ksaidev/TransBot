@@ -1,4 +1,4 @@
-from src.structure.doubledict import DoubleDict
+from src.module.doubledict import DoubleDict
 from src.script.exceptions import *
 
 class Command:

@@ -1,17 +1,24 @@
-from kakaoPy.channel import Channel
 from src.data.channel_db import ChannelDatabase
 from data.private import ADMIN_CHANNEL
+from src.constants import messages
 
-class BotChannel(Channel):
+class ChannelManager:
     database = ChannelDatabase()
 
     def __init__(self, channel):
-        super().__init__(channel.chatId, channel.li, channel.writer)
+        self.channel = channel
         self.chat_id = channel.chatId
-        self.mode = self.get_mode()
 
-    # def is_registered(self):
-    #     return self.mode is not None
+    async def respond(self):
+        if self.is_registered():
+            return
+
+        self.register()
+        await self.send_text(messages.WELCOME)
+
+
+    def is_registered(self):
+        return self.get_mode() is not None
 
     def register(self):
         self.database.add_channel(self.chat_id)
@@ -24,3 +31,6 @@ class BotChannel(Channel):
 
     def is_admin(self):
         return self.chat_id in ADMIN_CHANNEL
+
+    async def send_text(self, message):
+        await self.channel.sendText(message)
