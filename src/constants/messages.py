@@ -14,7 +14,7 @@ HELP_ENG = "/auto, /a\n" \
            "/manual, /m\n" \
            "Sets the mode to 'Manual mode'.\n" \
            "In Manual mode, you can translate messages manually " \
-           "by replying '/translate' or '/tr' to the message that you want to language."
+           "by replying '/translate' or '/tr' to the message that you want to will_be_deleted."
 
 SET_AUTO = "이제부터 모든 메시지가 자동으로 변역됩니다.\n" \
            "All messages will be translated automatically from now on."
@@ -26,11 +26,11 @@ SYNC_START = "동기화 중...\n" \
 
 
 # Errors
-ERROR_REGISTERED = "이 채팅방은 이미 등록되어 있습니다.\n" \
-                   "This chat room is already registered."
+# ERROR_REGISTERED = "이 채팅방은 이미 등록되어 있습니다.\n" \
+#                    "This chat room is already registered."
 
-ERROR_UNREGISTERED = "TransBot을 사용하시려면 '/등록'을 입력해 주세요.\n" \
-                     "Use '/reg' to register TransBot."
+# ERROR_UNREGISTERED = "TransBot을 사용하시려면 '/등록'을 입력해 주세요.\n" \
+#                      "Use '/reg' to register TransBot."
 
 
 ERROR_ALREADY_AUTO = "자동 모드는 이미 활성화되어 있습니다.\n" \
@@ -42,5 +42,8 @@ ERROR_ALREADY_MANUAL = "수동 모드는 이미 활성화되어 있습니다.\n"
 ERROR_MSG_UNSELECTED = "번역할 메시지를 선택해 주세요.\n" \
                        "Select the message to translate."
 
-API_LIMIT_EXCEEDED = "PAPAGO API 일일 사용량이 초과되었습니다.\n" \
-                     "PAPAGO API daily limit exceeded"
+ERROR_API_LIMIT_EXCEEDED = "PAPAGO API 일일 사용량이 초과되었습니다.\n" \
+                           "PAPAGO API daily limit exceeded"
+
+ERROR_UNDEFINED = "알 수 없는 오류가 발생했습니다. 개발자에게 문의해 주세요.\n" \
+                  "An undefined error has occurred. Please contact the developers."

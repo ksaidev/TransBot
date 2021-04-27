@@ -21,7 +21,7 @@ engHelpMsg = "/auto, /a\n" \
              "/manual, /m\n" \
              "Sets the mode to 'Manual mode'.\n" \
              "In Manual mode, you can translate messages manually " \
-             "by replying '/translate' or '/tr' to the message that you want to language."
+             "by replying '/translate' or '/tr' to the message that you want to will_be_deleted."
 
 alreadyAuto = "자동 모드는 이미 활성화되어 있습니다.\n" \
               "Auto mode is already active."

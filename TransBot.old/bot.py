@@ -1,8 +1,6 @@
 from src.data import channel_db
 from src.data.channel_db import ChannelDatabase
-from src.language.interpret import interpreter
-
-import message
+from src.script.translator import interpreter
 
 
 class Bot:
