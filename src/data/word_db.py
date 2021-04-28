@@ -9,21 +9,29 @@ class WordDatabase(Database):
         super().__init__(dir)
         self.remote = self.Remote()
 
-    @Database.connection
     def get_word_data(self, target):
+        """
+        Gets the source, target word pairs from 'target_(lang)' table in db
+        Returns a encode={source: %keycode%}, decode={%keycode%: target} dict
+        * uses a custom method using row_factory for accessing database
+        """
         assert target in ('ko', 'en')
+
+
+        _connection = sqlite3.connect(self._dir)
+
+
         self.execute(
             f'SELECT * FROM target_{target}'
         )
         word_data = self.fetch()
         return word_data
 
-    def pull(self):
-        pass
 
     # @Database.connection
     # def write_rows(self, target, data):
     #     pass
+
 
     def _reset(self, table_name):
         self.execute(

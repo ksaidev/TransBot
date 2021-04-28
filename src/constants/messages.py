@@ -1,4 +1,4 @@
-# Notice messages
+# Notice messages constants
 WELCOME = ["안녕하세요! 카톡 통역봇 TransBot이에요!\nHello! I'm your KakaoTalk translator, TransBot!",
            "도움말을 보시려면 '/도움말'을 입력해주세요.\nType '/help' for help."]
 
@@ -21,18 +21,14 @@ SET_AUTO = "이제부터 모든 메시지가 자동으로 변역됩니다.\n" \
 SET_MANUAL = "이제 메시지가 자동으로 번역되지 않습니다.\n" \
              "All messages will not be translated automatically from now on."
 
-SYNC_START = "동기화 중...\n" \
-             "Synchronizing..."
+SYNC_START = "동기화 시작\n" \
+             "Sync start"
+
+SYNC_COMPLETE = "동기화 완료\n" \
+                "Sync complete"
 
 
-# Errors
-# ERROR_REGISTERED = "이 채팅방은 이미 등록되어 있습니다.\n" \
-#                    "This chat room is already registered."
-
-# ERROR_UNREGISTERED = "TransBot을 사용하시려면 '/등록'을 입력해 주세요.\n" \
-#                      "Use '/reg' to register TransBot."
-
-
+# Error message constants
 ERROR_ALREADY_AUTO = "자동 모드는 이미 활성화되어 있습니다.\n" \
                      "Auto mode is already active."
 
