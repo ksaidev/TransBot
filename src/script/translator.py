@@ -3,7 +3,6 @@ from src.module.papago import PapagoAPI
 from src.data.word_db import WordDatabase
 import re
 
-#TODO
 
 class Translator:
     def __init__(self):
@@ -11,29 +10,78 @@ class Translator:
         pass
 
     def translate(self, text):
-        if self._is_korean(text):
+        if self._is_korean_text(text):
             pass
 
         else:
             pass
 
 
-    def replaceKey(self):
-        pass
-
-
+    @staticmethod
+    def _is_korean_word(word):
+        return re.search('[ㄱ-ㅎㅏ-ㅣ가-힣]', word) is not None
 
     @staticmethod
-    def _is_korean(text):
-        letters = text.split()
-        total = len(letters)
-        korCount = 0
+    def _is_korean_text(text):
+        """
+        Checks if the text is Korean or not
+        Determined by comparing the number of words in each language
+        """
+        words = text.split()
+        total = len(words)
+        kor_count = 0
 
-        for letter in letters:
-            if re.search('[ㄱ-ㅎㅏ-ㅣ가-힣]', letter) is not None:
-                korCount += 1
+        for word in words:
+            if Translator._is_korean_word(word):
+                kor_count += 1
 
-        return korCount >= total // 2
+        return kor_count >= total // 2
+
+    @staticmethod
+    def _has_jong_seong(letter):
+        """
+        Returns if the letter has a jong seong
+        Always return false if the input letter is not Korean
+        """
+        assert len(letter) == 1
+        if Translator._is_korean_word(letter):
+            return (ord(letter) - ord('가')) % 28 != 0
+        return False
+
+    @staticmethod
+    def encode(text, word_table):
+        """
+        Encodes the custom words of TransBot so that it won't be translated by the Papago API
+        The encode format is '%(number)('n' or 'p')%' (depending on the Jong Seong of the target word
+        Returns the encoded text and the temporary lookup table for decoding
+        """
+        regex = re.compile("(%s)" % "|".join(map(re.escape, word_table.keys())), flags=re.I)
+        temp_lookup = {}
+
+        def key_generator():
+            key_num = 1
+            while True:
+                yield key_num
+                key_num += 1
+
+        key_number = key_generator()
+
+        def encoder(mo):
+            source = mo.string[mo.start():mo.end()].lower()
+            target = word_table[source]
+            trailer = 'n' if Translator._has_jong_seong(target[-1]) else 'p'
+            key = f'%{next(key_number)}{trailer}%'
+            temp_lookup[key] = target
+            return key
+
+        return regex.sub(encoder, text), temp_lookup
+
+    @staticmethod
+    def decode(text, lookup_table):
+        pass
+
+    def link_protector(self):
+        pass
 
 
 

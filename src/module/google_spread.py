@@ -15,17 +15,17 @@ class GoogleSpread:
 
 
     def _get_sheet(self, sheet_key):
-        assert sheet_key in ('ksa_words', 'target_ko', 'target_en')
-        sheet_name = 'general(ko→en)' if sheet_key == 'target_en' else \
-                     'general(en→ko)' if sheet_key == 'target_ko' else \
-                     'ksa_words'
+        sheet_name = {'ksa_words': 'ksa_words',
+                      'target_ko': 'general(en→ko)',
+                      'target_en': 'general(en→ko)'}
+        assert sheet_key in sheet_name
         credentials = ServiceAccountCredentials.from_json_keyfile_name(
             self.key_dir, self.scope
         )
         gc = gspread.authorize(credentials)
         doc = gc.open_by_url(self.spreadsheet_url)
 
-        return doc.worksheet(sheet_name)
+        return doc.worksheet(sheet_name[sheet_key])
 
     def get_data(self, sheet_key):
         sheet = self._get_sheet(sheet_key)
