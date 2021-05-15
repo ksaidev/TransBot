@@ -9,8 +9,8 @@ def present_time():
 while True:
     try:
         print(present_time() + 'Server start')
-        imp.reload(imp.import_module('main.py'))
-
+        # imp.reload(imp.import_module('main.py'))
+        exec(open('main.py').read())
     except ConnectionResetError:
         pass
 
