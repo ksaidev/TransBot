@@ -1,11 +1,11 @@
 import os
 import string
 import io
+import json
 
 
 class KeywordProcessor(object):
-
-    def __init__(self, case_sensitive=False):
+    def __init__(self, db_dir, case_sensitive=False):
         """
         Args:
             case_sensitive (boolean): Keyword search should be case sensitive set or not.
@@ -17,6 +17,8 @@ class KeywordProcessor(object):
         self.keyword_trie_dict = dict()
         self.case_sensitive = case_sensitive
         self._terms_in_trie = 0
+
+        self.db_dir = db_dir
 
     def __len__(self):
         """Number of terms present in the keyword_trie_dict
@@ -108,6 +110,15 @@ class KeywordProcessor(object):
         """Disabled iteration as get_all_keywords() is the right way to iterate
         """
         raise NotImplementedError("Please use get_all_keywords() instead")
+
+    def load_from_database(self):
+        with open(self.db_dir, 'r') as fp:
+            self.keyword_trie_dict = json.load(fp)
+
+    def save_to_database(self):
+        with open(self.db_dir, 'w') as fp:
+            json.dump(self.keyword_trie_dict, fp, indent='\t')
+
 
     def set_non_word_boundaries(self, non_word_boundaries):
         """set of characters that will be considered as part of word.
@@ -473,7 +484,11 @@ class KeywordProcessor(object):
 
 if __name__ == '__main__':
     replacer = KeywordProcessor()
-    replacer.add_keywords_from_dict({'ksa': ['한과 영', 'korea']})
+    # replacer.add_keywords_from_dict({'ksa': ['한과 영', 'korea']})
 
-    print(replacer.replace_keywords('한과 영은 좋은 학교이다'))
-    print(replacer.keyword_trie_dict)
+    # print(replacer.replace_keywords('한과 영은 좋은 학교이다'))
+    replacer.add_keyword('apple')
+    replacer.add_keyword('app', '$1s$')
+    # from pprint import pprint
+    # pprint(replacer.keyword_trie_dict)
+    print(replacer.replace_keywords('app qwer'))

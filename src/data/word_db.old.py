@@ -1,94 +1,72 @@
-# import sqlite3
-# from src.data.database import Database
+import sqlite3
+from src.data.database import Database
 from src.module.google_spread import GoogleSpread
-from src.module.flashtext import KeywordProcessor
 from data.private import GSPREAD_URL
 
 
-
-class WordDatabase():
-    def __init__(self, dir='../data/words.json'):
-        # self.dir = dir
+class WordDatabase(Database):
+    def __init__(self, dir='../data/words.db'):
+        super().__init__(dir)
         self.remote = self.Remote()
-        self.processor = {
-            'ko': KeywordProcessor(dir),
-            'en': KeywordProcessor(dir)
-        }
 
-    def replace(self, text, target):
-        pass
+    def get_word_data(self, target):
+        """
+        Gets the source, target word pairs from 'target_(lang)' table in db
+        Returns a encode={source: %keycode%}, decode={%keycode%: target} dict
+        * uses a custom method using row_factory for accessing database
+        """
+        assert target in ('ko', 'en')
 
+
+        _connection = sqlite3.connect(self._dir)
+
+
+        self.execute(
+            f'SELECT * FROM target_{target}'
+        )
+        word_data = self.fetch()
+        return word_data
+
+
+    # @Database.connection
+    # def write_rows(self, target, data):
+    #     pass
+
+
+    def _reset(self, table_name):
+        self.execute(
+            f'DELETE from {table_name}'
+        )
+
+    def _insert(self, table_name, pair):
+        self.execute(
+            f'INSERT INTO {table_name} values (?, ?)', pair
+        )
+
+    # def _contains(self, ta, source_item):
+    #     self.execute(
+    #         f'SELECT FROM target_{target} WHERE source={source_item}'
+    #     )
+    #     return self.fetch() != []
+
+    def _order(self, table_name):
+        self.execute(
+            f'SELECT * FROM {table_name} ORDER BY LENGTH source'
+        )
+
+    @Database.connection
     def pull(self):
         data, error_data = self.remote.get_data()
-        for target in data:
-            index = 0
-            for source_word in data[target]:
-                
-                self.processor[target].add_keyword()
 
-                index += 1
+        for table_name in data:
+            table = data[table_name]
+            self._reset(table_name)
+            for source_word in table:
+                target_word = table[source_word]
+                self._insert(table_name, (source_word, target_word))
+            self._order(table_name)
 
         return error_data
-
-
-    # def get_word_data(self, target):
-    #     """
-    #     Gets the source, target word pairs from 'target_(lang)' table in db
-    #     Returns a encode={source: %keycode%}, decode={%keycode%: target} dict
-    #     * uses a custom method using row_factory for accessing database
-    #     """
-    #     assert target in ('ko', 'en')
-    #
-    #
-    #     _connection = sqlite3.connect(self._dir)
-    #
-    #
-    #     self.execute(
-    #         f'SELECT * FROM target_{target}'
-    #     )
-    #     word_data = self.fetch()
-    #     return word_data
-    #
-    #
-    # # @Database.connection
-    # # def write_rows(self, target, data):
-    # #     pass
-    #
-    #
-    # def _reset(self, table_name):
-    #     self.execute(
-    #         f'DELETE from {table_name}'
-    #     )
-    #
-    # def _insert(self, table_name, pair):
-    #     self.execute(
-    #         f'INSERT INTO {table_name} values (?, ?)', pair
-    #     )
-    #
-    # # def _contains(self, ta, source_item):
-    # #     self.execute(
-    # #         f'SELECT FROM target_{target} WHERE source={source_item}'
-    # #     )
-    # #     return self.fetch() != []
-    #
-    # def _order(self, table_name):
-    #     self.execute(
-    #         f'SELECT * FROM {table_name} ORDER BY LENGTH source'
-    #     )
-    #
-    # @Database.connection
-    # def pull(self):
-    #     data, error_data = self.remote.get_data()
-    #
-    #     for table_name in data:
-    #         table = data[table_name]
-    #         self._reset(table_name)
-    #         for source_word in table:
-    #             target_word = table[source_word]
-    #             self._insert(table_name, (source_word, target_word))
-    #         self._order(table_name)
-    #
-    #     return error_data
 
 
     class Remote:
@@ -98,7 +76,7 @@ class WordDatabase():
 
         def get_data(self):
             data = {
-                'en': {}, 'ko': {}
+                'target_en': {}, 'target_ko': {}
             }
             error_data = {
                 'ksa_words': {}, 'target_en': {}, 'target_ko': {}
@@ -117,7 +95,7 @@ class WordDatabase():
                 for source, target in (('ko', 'en'), ('en', 'ko')):
                     target_word = pair[target]
                     source_word = pair[source]
-                    if source_word == '' or source_word in data[target]:
+                    if source_word == '' or source_word in data[f'target_{target}']:
                         error = source_word
                         break
                     to_append[target].update({source_word: target_word})
@@ -126,7 +104,7 @@ class WordDatabase():
                     if '' not in source_words:
                         pairs = {}
                         for source_word in source_words:
-                            if source_word in data[target]:
+                            if source_word in data[f'target_{target}']:
                                 error = source_word
                                 break
                             pairs.update({source_word: target_word})
@@ -136,7 +114,7 @@ class WordDatabase():
                     error_data['ksa_words'][row + self.HEADER_HEIGHT] = error
                 else:
                     for target in ('ko', 'en'):
-                        data[target].update(to_append[target])
+                        data[f'target_{target}'].update(to_append[target])
 
             # Get data from sheet 'general(ko→en)', 'general(en→ko)'
             for target in ('ko', 'en'):
@@ -149,11 +127,11 @@ class WordDatabase():
                         error_data[table_name][row + self.HEADER_HEIGHT] = ''
                         continue
                     source_word, target_word = line
-                    if source_word in data[target]:
+                    if source_word in data[table_name]:
                         error_data[table_name][row + self.HEADER_HEIGHT] = source_word
                         continue
 
-                    data[target].update({source_word: target_word})
+                    data[table_name].update({source_word: target_word})
 
             # Marking rows with errors on the sheet
             self.mark_error(error_data)
@@ -174,5 +152,5 @@ if __name__ == '__main__':
     # remote testing
     db = WordDatabase.Remote(key_dir='C:/Python projects/TransBot/data/remote_db_key.json')
     data_, error_data_ = db.get_data()
-    pprint(data_)
+    pprint(error_data_)
 
