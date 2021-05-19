@@ -6,7 +6,6 @@ import text
 from DB import mode
 import private
 
-import time
 
 class MyClass(client.Client):
     async def onMessage(self, chat):
@@ -27,13 +26,6 @@ class MyClass(client.Client):
                 await chat.sendTexts(messages)
 
 
-while True:
-    try:
-        client = MyClass("TransBot")
-        client.run(private.kakao_id, private.kakao_pw)
-    except Exception as e:
-        print(e)
-        client.loop.close()
-
-    time.sleep(5)
-    print('=======================')
+def run():
+    trans_bot = MyClass("TransBot")
+    trans_bot.run(private.kakao_id, private.kakao_pw)
