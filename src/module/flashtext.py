@@ -5,7 +5,7 @@ import json
 
 
 class KeywordProcessor(object):
-    def __init__(self, db_dir, case_sensitive=False):
+    def __init__(self, keyword_data=None, case_sensitive=False):
         """
         Args:
             case_sensitive (boolean): Keyword search should be case sensitive set or not.
@@ -14,11 +14,10 @@ class KeywordProcessor(object):
         self._keyword = '_keyword_'
         self._white_space_chars = {'.', '\t', '\n', '\a', ' ', ','}
         self.non_word_boundaries = set(string.digits + string.ascii_letters + '_')
-        self.keyword_trie_dict = dict()
+        self.keyword_trie_dict = keyword_data if keyword_data is not None else {}
         self.case_sensitive = case_sensitive
         self._terms_in_trie = 0
 
-        self.db_dir = db_dir
 
     def __len__(self):
         """Number of terms present in the keyword_trie_dict
@@ -111,13 +110,11 @@ class KeywordProcessor(object):
         """
         raise NotImplementedError("Please use get_all_keywords() instead")
 
-    def load_from_database(self):
-        with open(self.db_dir, 'r') as fp:
-            self.keyword_trie_dict = json.load(fp)
+    def set_keyword_data(self, keyword_dict):
+        self.keyword_trie_dict = keyword_dict
 
-    def save_to_database(self):
-        with open(self.db_dir, 'w') as fp:
-            json.dump(self.keyword_trie_dict, fp, indent='\t')
+    def get_keyword_data(self):
+        return self.keyword_trie_dict
 
 
     def set_non_word_boundaries(self, non_word_boundaries):
