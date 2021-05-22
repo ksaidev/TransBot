@@ -4,7 +4,7 @@ import io
 import json
 
 
-class KeywordProcessor(object):
+class PreProcessor(object):
     def __init__(self, keyword_data=None, case_sensitive=False):
         """
         Args:
@@ -480,12 +480,15 @@ class KeywordProcessor(object):
 
 
 if __name__ == '__main__':
-    replacer = KeywordProcessor()
+    replacer = PreProcessor()
     # replacer.add_keywords_from_dict({'ksa': ['한과 영', 'korea']})
 
     # print(replacer.replace_keywords('한과 영은 좋은 학교이다'))
     # replacer.add_keyword('apple')
-    replacer.add_keyword('사과', '$1s$')
+    # replacer.add_keyword('사과', '$1s$')
+    replacer.add_keywords_from_dict(
+        {'사과': 'apple', '바나나': 'banana'}
+    )
     from pprint import pprint
     pprint(replacer.keyword_trie_dict)
     # print(replacer.replace_keywords('사과는 맛있다'))
