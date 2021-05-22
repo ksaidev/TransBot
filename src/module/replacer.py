@@ -13,6 +13,8 @@ class Replacer:
 
 
 
+
+
 # from old flashtext
 
 # def load_from_database(self):

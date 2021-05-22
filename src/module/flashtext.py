@@ -484,8 +484,8 @@ if __name__ == '__main__':
     # replacer.add_keywords_from_dict({'ksa': ['한과 영', 'korea']})
 
     # print(replacer.replace_keywords('한과 영은 좋은 학교이다'))
-    replacer.add_keyword('apple')
-    replacer.add_keyword('app', '$1s$')
-    # from pprint import pprint
-    # pprint(replacer.keyword_trie_dict)
-    print(replacer.replace_keywords('app qwer'))
+    # replacer.add_keyword('apple')
+    replacer.add_keyword('사과', '$1s$')
+    from pprint import pprint
+    pprint(replacer.keyword_trie_dict)
+    # print(replacer.replace_keywords('사과는 맛있다'))
