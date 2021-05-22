@@ -1,94 +1,51 @@
-# import sqlite3
-# from src.data.database import Database
 from src.module.google_spread import GoogleSpread
 from src.module.flashtext import KeywordProcessor
 from data.private import GSPREAD_URL
+import json
 
 
+class WordDatabase:
+    def __init__(self, db_dir='../data/words.json'):
+        self.dir = db_dir
+        self.remote = self.Remote('C:/Python projects/TransBot/data/remote_db_key.json')
+        self.data = {'ko': [], 'en': []}
+        self.load()
 
-class WordDatabase():
-    def __init__(self, dir='../data/words.json'):
-        # self.dir = dir
-        self.remote = self.Remote()
-        self.processor = {
-            'ko': KeywordProcessor(dir),
-            'en': KeywordProcessor(dir)
-        }
+    def load(self):
+        try:
+            with open(self.dir, 'r') as f:
+                self.data = json.load(f)
+        except json.decoder.JSONDecodeError:
+            pass
 
-    def replace(self, text, target):
-        pass
+    def save(self):
+        with open(self.dir, 'w') as f:
+            json.dump(self.data, f, indent='\t')
 
     def pull(self):
-        data, error_data = self.remote.get_data()
-        for target in data:
+        remote_data, error_data = self.remote.get_data()
+
+        for target in remote_data:
+            preprocess_generator = KeywordProcessor()
+            postprocess = [''] * len(remote_data[target])
+
             index = 0
-            for source_word in data[target]:
-                
-                self.processor[target].add_keyword()
+            for source_word in remote_data[target]:
+                target_word = remote_data[target][source_word]
+
+                trailer = 'n' if self.has_jongseong(target_word[-1]) else 'p'
+                key = f'${index}{trailer}$'
+                preprocess_generator.add_keyword(source_word, key)
+
+                postprocess[index] = target_word
 
                 index += 1
 
+            preprocess = preprocess_generator.get_keyword_data()
+            self.data[target] = [preprocess, postprocess]
+
+        self.save()
         return error_data
-
-
-    # def get_word_data(self, target):
-    #     """
-    #     Gets the source, target word pairs from 'target_(lang)' table in db
-    #     Returns a encode={source: %keycode%}, decode={%keycode%: target} dict
-    #     * uses a custom method using row_factory for accessing database
-    #     """
-    #     assert target in ('ko', 'en')
-    #
-    #
-    #     _connection = sqlite3.connect(self._dir)
-    #
-    #
-    #     self.execute(
-    #         f'SELECT * FROM target_{target}'
-    #     )
-    #     word_data = self.fetch()
-    #     return word_data
-    #
-    #
-    # # @Database.connection
-    # # def write_rows(self, target, data):
-    # #     pass
-    #
-    #
-    # def _reset(self, table_name):
-    #     self.execute(
-    #         f'DELETE from {table_name}'
-    #     )
-    #
-    # def _insert(self, table_name, pair):
-    #     self.execute(
-    #         f'INSERT INTO {table_name} values (?, ?)', pair
-    #     )
-    #
-    # # def _contains(self, ta, source_item):
-    # #     self.execute(
-    # #         f'SELECT FROM target_{target} WHERE source={source_item}'
-    # #     )
-    # #     return self.fetch() != []
-    #
-    # def _order(self, table_name):
-    #     self.execute(
-    #         f'SELECT * FROM {table_name} ORDER BY LENGTH source'
-    #     )
-    #
-    # @Database.connection
-    # def pull(self):
-    #     data, error_data = self.remote.get_data()
-    #
-    #     for table_name in data:
-    #         table = data[table_name]
-    #         self._reset(table_name)
-    #         for source_word in table:
-    #             target_word = table[source_word]
-    #             self._insert(table_name, (source_word, target_word))
-    #         self._order(table_name)
-    #
-    #     return error_data
 
 
     class Remote:
@@ -164,15 +121,28 @@ class WordDatabase():
             for sheet_key in error_rows:
                 self.spread.color_rows(sheet_key, error_rows[sheet_key])
 
+    @staticmethod
+    def has_jongseong(letter):
+        order = ord(letter)
+        if ord('가') <= order <= ord('힣') or ord('ㄱ') <= order <= ord('ㆌ'):
+            return (ord(letter) - ord('가')) % 28 != 0
+        else:
+            return False
+
 
 if __name__ == '__main__':
     # local testing
     # db = WordDatabase(dir='words.db')
     # print(db.get_word_data('en'))
 
-    from pprint import pprint
-    # remote testing
-    db = WordDatabase.Remote(key_dir='C:/Python projects/TransBot/data/remote_db_key.json')
-    data_, error_data_ = db.get_data()
-    pprint(data_)
+    # from pprint import pprint
+    # # remote testing
+    # db = WordDatabase.Remote(key_dir='C:/Python projects/TransBot/data/remote_db_key.json')
+    # data_, error_data_ = db.get_data()
+    # # pprint(data_)
+    # pprint(error_data_)
 
+    db = WordDatabase()
+    data_, _ = db.pull()
+    from pprint import pprint
+    pprint(data_)
