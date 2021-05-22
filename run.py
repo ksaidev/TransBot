@@ -9,10 +9,10 @@ def present_time():
            % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
 
 
-while True:
-    print(present_time() + 'Server start')
-    main.run()
-    time.sleep(5)
+print(present_time() + 'Server start')
+main.run()
+time.sleep(5)
+os.execv(sys.executable, ['python'] + sys.argv)
 
 # try:
 #     print(present_time() + 'Server start')
