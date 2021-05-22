@@ -1,5 +1,5 @@
 from src.module.google_spread import GoogleSpread
-from src.module.flashtext import KeywordProcessor
+from src.module.preprocessor import PreProcessor
 from data.private import GSPREAD_URL
 import json
 
@@ -9,7 +9,6 @@ class WordDatabase:
         self.dir = db_dir
         self.remote = self.Remote('C:/Python projects/TransBot/data/remote_db_key.json')
         self.data = {'ko': [], 'en': []}
-        self.load()
 
     def load(self):
         try:
@@ -20,13 +19,13 @@ class WordDatabase:
 
     def save(self):
         with open(self.dir, 'w') as f:
-            json.dump(self.data, f, indent='\t')
+            json.dump(self.data, f, indent=None)
 
     def pull(self):
         remote_data, error_data = self.remote.get_data()
 
         for target in remote_data:
-            preprocess_generator = KeywordProcessor()
+            preprocess_generator = PreProcessor()
             postprocess = [''] * len(remote_data[target])
 
             index = 0
@@ -143,6 +142,6 @@ if __name__ == '__main__':
     # pprint(error_data_)
 
     db = WordDatabase()
-    data_, _ = db.pull()
-    from pprint import pprint
-    pprint(data_)
+    db.pull()
+    # from pprint import pprint
+    # pprint(data_)
