@@ -1,6 +1,6 @@
 import re
 
-regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
+url = re.compile(r"(?:[a-zA-Z]|[0-9]|[$\-@.&+:/?=]|[!*(),])+")
 
-a = re.findall(regex, 'percy3368@gmail.com')
+a = re.findall(url, '제가 만든 사이트는 하입니다')
 print(a)
