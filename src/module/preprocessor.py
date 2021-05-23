@@ -1,7 +1,7 @@
 import os
 import string
 import io
-import json
+import re
 
 
 class PreProcessor(object):
@@ -17,6 +17,9 @@ class PreProcessor(object):
         self.keyword_trie_dict = keyword_data if keyword_data is not None else {}
         self.case_sensitive = case_sensitive
         self._terms_in_trie = 0
+        self.replace_protector = re.compile(
+            r"(?:(?:[a-zA-Z]|[0-9])+(?:[$\-@.&+:/?=]|[!*(),])+)+(?:[a-zA-Z]|[0-9]|/)+"
+        )
 
 
     def __len__(self):
@@ -310,7 +313,7 @@ class PreProcessor(object):
             return keywords_extracted
         return [value[0] for value in keywords_extracted]
 
-    def process(self, sentence, max_cost=0):
+    def replace_keywords(self, sentence, max_cost=0):
         if not sentence:
             # if sentence is empty or none just return the same.
             return sentence
@@ -478,17 +481,29 @@ class PreProcessor(object):
                 yield from self._levenshtein_rec(new_char, new_node, word, new_rows, max_cost, depth=depth + 1)
 
 
+    def process(self, text):
+        # link protecting goes here
+        matches = self.replace_protector.finditer(text)
+
+        replaced_text = ''
+        start = 0
+        for match in matches:
+            end = match.start()
+            replaced_text += self.replace_keywords(text[start:end])
+            start = match.end()
+            replaced_text += text[end:start]
+        replaced_text += self.replace_keywords(text[start:])
+
+        return replaced_text
+
 
 if __name__ == '__main__':
     replacer = PreProcessor()
     # replacer.add_keywords_from_dict({'ksa': ['한과 영', 'korea']})
-
     # print(replacer.replace_keywords('한과 영은 좋은 학교이다'))
-    # replacer.add_keyword('apple')
+
     replacer.add_keyword('사과', '$1s$')
-    # replacer.add_keywords_from_dict(
-    #     {'사과': 'apple', '바나나': 'banana'}
-    # )
+    # replacer.add_keyword()
     from pprint import pprint
-    pprint(replacer.keyword_trie_dict)
+    # pprint(replacer.keyword_trie_dict)
     print(replacer.process('사과는 맛있다'))
