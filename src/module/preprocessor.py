@@ -5,6 +5,12 @@ import re
 
 
 class PreProcessor(object):
+    """
+    Modified FlashText library
+    added features:
+    importing/exporting trie_dict directly
+    protecting url, emails from keyword replacement
+    """
     def __init__(self, keyword_data=None, case_sensitive=False):
         """
         Args:
@@ -482,7 +488,9 @@ class PreProcessor(object):
 
 
     def process(self, text):
-        # link protecting goes here
+        """
+        replaces the keywords except for keywords in an url or an email.
+        """
         matches = self.replace_protector.finditer(text)
 
         replaced_text = ''
