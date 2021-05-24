@@ -1,6 +1,6 @@
 # Notice messages constants
-WELCOME = ["안녕하세요! 카톡 통역봇 TransBot이에요!\nHello! I'm your KakaoTalk translator, TransBot!",
-           "도움말을 보시려면 '/도움말'을 입력해주세요.\nType '/help' for help."]
+WELCOME = "안녕하세요! 카톡 통역봇 TransBot이에요! 도움말을 보시려면 '/도움말'을 입력해주세요. \n" \
+          "Hello! I'm your KakaoTalk translator, TransBot! Type '/help' for help."
 
 HELP_KOR = "/자동, /ㅈ\n" \
            "TransBot을 자동 번역 모드로 설정합니다.\n" \
