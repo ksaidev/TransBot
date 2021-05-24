@@ -8,6 +8,9 @@ class PostProccesor:
         self.data = data
 
     def process(self, text):
+        """
+        replaces the untranslateable keys from the translated string
+        """
         regex = re.compile(r'\$\d*[n|p]\$')
 
         def encoder(mo):
