@@ -22,6 +22,10 @@ class WordDatabase:
             json.dump(self.data, f, indent=None)
 
     def pull(self):
+        """
+        saves the data from the remote to the local
+        returns error row data
+        """
         remote_data, error_data = self.remote.get_data()
 
         for target in remote_data:
@@ -48,11 +52,18 @@ class WordDatabase:
 
 
     class Remote:
+        """
+        An inner class for handling google spreadsheet word database
+        """
         def __init__(self, key_dir='../data/remote_db_key.json', url=GSPREAD_URL):
             self.spread = GoogleSpread(key_dir, url)
             self.HEADER_HEIGHT = 2
 
         def get_data(self):
+            """
+            gets keyword data and error row data from google spreadsheet
+            marks rows with errors on the spreadsheet
+            """
             data = {
                 'en': {}, 'ko': {}
             }
