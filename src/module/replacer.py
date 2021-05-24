@@ -31,23 +31,8 @@ class Replacer:
             self.processor[target].post.set_keyword_data(postprocessor_data)
 
 
-
-
-
-
-
-
-
-# from old flashtext
-
-# def load_from_database(self):
-#     try:
-#         with open(self.db_dir, 'r') as fp:
-#             data = json.load(fp)
-#     except json.decoder.JSONDecodeError:
-#         data = {}
-#     self.keyword_trie_dict = data
-#
-# def save_to_database(self):
-#     with open(self.db_dir, 'w') as fp:
-#         json.dump(self.keyword_trie_dict, fp, indent='\t')
+if __name__ == '__main__':
+    replacer = Replacer()
+    print(replacer.preprocess(
+        '한과영은 과학영재학교이다. ', 'en'
+    ))

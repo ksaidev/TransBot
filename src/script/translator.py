@@ -12,9 +12,7 @@ class Translator:
         target = 'en' if self._is_korean_text(text) else 'ko'
 
         preprocessed_text = self.replacer.preprocess(text, target)
-        print(preprocessed_text)
         translated_text = self.api.get_translated_text(preprocessed_text, target)
-        print(translated_text)
         postprocessed_text = self.replacer.postprocess(translated_text, target)
 
         return postprocessed_text
@@ -47,4 +45,4 @@ class Translator:
 
 if __name__ == '__main__':
     tr = Translator()
-    print(tr.translate('KSA is a school'))
+    print(tr.translate('한과영은 좋은 학교에요'))
