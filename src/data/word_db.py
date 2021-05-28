@@ -5,7 +5,7 @@ import json
 
 
 class WordDatabase:
-    def __init__(self, db_dir='../data/words.json'):
+    def __init__(self, db_dir='../../data/words.json'):
         self.dir = db_dir
         self.remote = self.Remote('C:/Python projects/TransBot/data/remote_db_key.json')
         self.data = {'ko': [], 'en': []}
