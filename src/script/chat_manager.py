@@ -154,6 +154,7 @@ class ChatManager:
         """
         await self.send_text(messages.SYNC_START)
         error_data = self.database.pull()
+        self.translator.replacer.load()
 
         sheet_name = {'ksa_words': 'ksa_words',
                       'target_ko': 'general(en→ko)',
