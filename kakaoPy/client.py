@@ -6,7 +6,8 @@ import asyncio
 from . import cryptoManager
 import time
 from .packet import Packet
-from bson import BSON as bson
+# from bson import BSON as bson
+import bson
 from . import httpApi
 import json
 import struct

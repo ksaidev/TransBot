@@ -73,6 +73,7 @@ class WordDatabase:
 
             # Get data from sheet 'ksa_words'
             ksa_words = self.spread.get_data('ksa_words')
+            # TODO : Optimize
             for row in range(len(ksa_words)):
                 error = None
                 to_append = {'ko': {}, 'en': {}}
@@ -129,6 +130,7 @@ class WordDatabase:
 
         def mark_error(self, error_rows):
             for sheet_key in error_rows:
+                self.spread.color_reset(sheet_key)
                 self.spread.color_rows(sheet_key, error_rows[sheet_key])
 
     @staticmethod
