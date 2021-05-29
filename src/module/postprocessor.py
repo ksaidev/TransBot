@@ -11,7 +11,7 @@ class PostProccesor:
         """
         replaces the untranslateable keys from the translated string
         """
-        regex = re.compile(r'\$\d*[n|p]\$')
+        regex = re.compile(r'\$\d*[a|r]\$')
 
         def encoder(mo):
             source = mo.string[mo.start():mo.end()]
