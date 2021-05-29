@@ -238,6 +238,6 @@ class Client:
 
     def run(self, LoginId, LoginPw):
         self.loop = asyncio.get_event_loop()
-        # self.loop.set_exception_handler(self.connection_exception_handler)
+        self.loop.set_exception_handler(self.connection_exception_handler)
         self.loop.create_task(self.__login(LoginId, LoginPw))
         self.loop.run_forever()
