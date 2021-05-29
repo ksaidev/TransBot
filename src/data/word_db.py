@@ -36,7 +36,7 @@ class WordDatabase:
             for source_word in remote_data[target]:
                 target_word = remote_data[target][source_word]
 
-                trailer = 'n' if self.has_jongseong(target_word[-1]) else 'p'
+                trailer = 'r' if self.has_jongseong(target_word[-1]) else 'a'
                 key = f'${index}{trailer}$'
                 preprocess_generator.add_keyword(source_word, key)
 
