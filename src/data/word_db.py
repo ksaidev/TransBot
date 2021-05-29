@@ -55,7 +55,7 @@ class WordDatabase:
         """
         An inner class for handling google spreadsheet word database
         """
-        def __init__(self, key_dir='../data/remote_db_key.json', url=GSPREAD_URL):
+        def __init__(self, key_dir='data/remote_db_key.json', url=GSPREAD_URL):
             self.spread = GoogleSpread(key_dir, url)
             self.HEADER_HEIGHT = 2
 
