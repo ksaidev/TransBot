@@ -2,7 +2,8 @@ from socket import socket
 from . import cryptoManager
 from . import packet
 import io
-from bson import BSON as bson
+# from bson import BSON as bson
+import bson
 import struct
 
 

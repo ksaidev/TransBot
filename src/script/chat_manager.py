@@ -164,8 +164,8 @@ class ChatManager:
             if len(errors) > 0:
                 error_message = f'error in sheet [{sheet_name[sheet_key]}]'
                 for row in errors:
-                    error = '[blank cell]' if errors[row] == '' else f"'errors[row]'"
-                    error_message += f'\n{row}  {error}'
+                    error = '[blank cell]' if errors[row] == '' else f"'{errors[row]}'"
+                    error_message += f'\n{row} {error}'
                 await self.send_text(error_message)
 
         await self.send_text(messages.SYNC_COMPLETE)
