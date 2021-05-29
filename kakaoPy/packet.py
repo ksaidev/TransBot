@@ -1,4 +1,5 @@
-from bson import BSON as bson
+# from bson import BSON as bson
+import bson
 from . import cryptoManager
 import os
 import io

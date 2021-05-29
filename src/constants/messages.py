@@ -27,6 +27,8 @@ SYNC_START = "동기화 시작\n" \
 SYNC_COMPLETE = "동기화 완료\n" \
                 "Sync complete"
 
+RESTART = "서버 재시작 중...\n" \
+          "Attempting server restart..."
 
 # Error message constants
 ERROR_ALREADY_AUTO = "자동 모드는 이미 활성화되어 있습니다.\n" \

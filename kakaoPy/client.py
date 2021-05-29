@@ -6,7 +6,8 @@ import asyncio
 from . import cryptoManager
 import time
 from .packet import Packet
-from bson import BSON as bson
+# from bson import BSON as bson
+import bson
 from . import httpApi
 import json
 import struct
@@ -217,7 +218,26 @@ class Client:
         self.loop.create_task(self.__recvPacket())
         self.loop.create_task(self.__heartbeat())
 
+    @staticmethod
+    def connection_exception_handler(loop, context):
+        # first, handle with default handler
+        # loop.default_exception_handler(context)
+
+        exception = context.get('exception')
+        if isinstance(exception, ConnectionResetError):
+            print('[Connection reset]')
+            print(context['exception'])
+            print(context['message'])
+            loop.stop()
+        elif isinstance(exception, Exception):
+            print('[Undefined error]')
+            print(context['exception'])
+            print(context['message'])
+            loop.stop()
+
+
     def run(self, LoginId, LoginPw):
         self.loop = asyncio.get_event_loop()
+        self.loop.set_exception_handler(self.connection_exception_handler)
         self.loop.create_task(self.__login(LoginId, LoginPw))
         self.loop.run_forever()
