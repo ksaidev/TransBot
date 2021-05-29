@@ -25,6 +25,7 @@ class Database:
 
     def _close(self):
         assert self._connection is not None and self._cursor is not None
+        self._connection.commit()
         self._connection.close()
         self._cursor, self._connection = None, None
 
