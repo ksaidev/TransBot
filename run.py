@@ -11,5 +11,4 @@ def present_time():
 
 print(present_time() + 'Server start')
 main.run()
-time.sleep(2)
 os.execv(sys.executable, ['python'] + sys.argv)
