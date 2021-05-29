@@ -1,5 +1,4 @@
-from src.script.command import Command
-from src.script.admin_command import AdminCommand
+from src.script.command import CommandType
 from src.script.channel_manager import ChannelManager
 from src.script.exceptions import BotException, ModeSetError, ManualSelectionError
 from src.constants import messages
@@ -19,9 +18,11 @@ class ChatManager:
 
     def __init__(self, chat):
         self.channel = ChannelManager(chat.channel)
+        self.chat = chat
         self.message = chat.message
         self.type = chat.type
         self.attachment = chat.attachment['src_message'] if chat.type == 26 else None
+        self.mode = self.channel.get_mode()
 
     async def respond(self):
         """
@@ -33,8 +34,7 @@ class ChatManager:
         if not self.translatable():
             return
 
-        command_ref = AdminCommand if self.channel.is_admin() else Command
-        command = command_ref.get_type(self.message)
+        command = CommandType.get_type(self.message, self.channel.is_admin())
         try:
             await self.run_command(command)
         except BotException as error:
@@ -46,7 +46,7 @@ class ChatManager:
         Runs a command function by its name
         The Command functions are functions decorated by '@Command()'
         """
-        return getattr(self, command)()
+        return await getattr(self, command)()
 
     async def send_text(self, text):
         """
@@ -68,19 +68,17 @@ class ChatManager:
         """
         A command decorator that decorates the command functions
         """
-        def __init__(self, exceptions=None, ignore=None):
+        def __init__(self, exceptions=None):
             self.exceptions = {} if exceptions is None else exceptions
-            self.ignore = ignore
 
         def __call__(self, func):
             def command_func(obj):
-                mode = obj.channel.get_mode()
+                # mode = obj.channel.get_mode()
 
-                if mode in self.exceptions:
-                    raise self.exceptions[mode]
+                if obj.mode in self.exceptions:
+                    raise self.exceptions[obj.mode]
 
-                if mode != self.ignore:
-                    return func(obj)
+                return func(obj)
 
             return command_func
 
@@ -120,15 +118,18 @@ class ChatManager:
         self.channel.set_mode(Mode.MANUAL)
         await self.send_text(messages.SET_MANUAL)
 
-    @Command(ignore=Mode.MANUAL)
-    async def auto_translate(self):
+    @Command()
+    async def plain_respond(self):
         """
         Translates the message and sends back the translated message
         Only works on auto mode
         """
-        translated_text = self.translator.translate(self.message)
-        header = '[Auto Translation]\n'
-        await self.send_text(header + translated_text)
+        if self.mode == Mode.AUTO:
+            translated_text = self.translator.translate(self.message)
+            header = '[Auto Translation]\n'
+            await self.send_text(header + translated_text)
+        else:
+            await self.chat.read()
 
 
     @Command()
@@ -153,6 +154,7 @@ class ChatManager:
         """
         await self.send_text(messages.SYNC_START)
         error_data = self.database.pull()
+        self.translator.replacer.load()
 
         sheet_name = {'ksa_words': 'ksa_words',
                       'target_ko': 'general(en→ko)',
@@ -162,8 +164,13 @@ class ChatManager:
             if len(errors) > 0:
                 error_message = f'error in sheet [{sheet_name[sheet_key]}]'
                 for row in errors:
-                    error = '[blank cell]' if errors[row] == '' else f"'errors[row]'"
-                    error_message += f'\n{row}  {error}'
+                    error = '[blank cell]' if errors[row] == '' else f"'{errors[row]}'"
+                    error_message += f'\n{row} {error}'
                 await self.send_text(error_message)
 
         await self.send_text(messages.SYNC_COMPLETE)
+
+    @Command()
+    async def restart(self):
+        await self.send_text(messages.RESTART)
+        raise ConnectionResetError

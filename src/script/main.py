@@ -12,6 +12,6 @@ class RootClient(client.Client):
     async def onJoin(self, packet, channel):
         await ChannelManager(channel).respond()
 
-
-root = RootClient("TransBot")
-root.run(KAKAO_ID, KAKAO_PW)
+def run():
+    root = RootClient("TransBot")
+    root.run(KAKAO_ID, KAKAO_PW)

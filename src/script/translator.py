@@ -31,16 +31,15 @@ class Translator:
         words = text.split()
         total = len(words)
         kor_count = 0
+        eng_count = 0
 
         for word in words:
             if Translator._is_korean_word(word):
                 kor_count += 1
+            else:
+                eng_count += 1
 
-        return kor_count >= total // 2
-
-
-    def link_protector(self):
-        pass
+        return kor_count >= eng_count
 
 
 if __name__ == '__main__':

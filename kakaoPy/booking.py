@@ -10,7 +10,7 @@ def getBookingData():
 
     with socket.create_connection((hostname, 443)) as sock:
         with context.wrap_socket(sock, server_hostname=hostname) as ssock:
-            data = bson.BSON.encode(
+            data = bson.encode(
                 {'os': "win32", "model": "", "MCCMNC": ""})
 
             b = packet.Packet(1000, 0, "GETCONF", 0, data)

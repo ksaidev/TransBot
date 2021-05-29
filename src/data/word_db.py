@@ -5,9 +5,9 @@ import json
 
 
 class WordDatabase:
-    def __init__(self, db_dir='../data/words.json'):
+    def __init__(self, db_dir='data/words.json'):
         self.dir = db_dir
-        self.remote = self.Remote('C:/Python projects/TransBot/data/remote_db_key.json')
+        self.remote = self.Remote()
         self.data = {'ko': [], 'en': []}
 
     def load(self):
@@ -36,7 +36,7 @@ class WordDatabase:
             for source_word in remote_data[target]:
                 target_word = remote_data[target][source_word]
 
-                trailer = 'n' if self.has_jongseong(target_word[-1]) else 'p'
+                trailer = 'r' if self.has_jongseong(target_word[-1]) else 'a'
                 key = f'${index}{trailer}$'
                 preprocess_generator.add_keyword(source_word, key)
 
@@ -55,7 +55,7 @@ class WordDatabase:
         """
         An inner class for handling google spreadsheet word database
         """
-        def __init__(self, key_dir='../data/remote_db_key.json', url=GSPREAD_URL):
+        def __init__(self, key_dir='data/remote_db_key.json', url=GSPREAD_URL):
             self.spread = GoogleSpread(key_dir, url)
             self.HEADER_HEIGHT = 2
 
@@ -73,6 +73,7 @@ class WordDatabase:
 
             # Get data from sheet 'ksa_words'
             ksa_words = self.spread.get_data('ksa_words')
+            # TODO : Optimize
             for row in range(len(ksa_words)):
                 error = None
                 to_append = {'ko': {}, 'en': {}}
@@ -129,6 +130,7 @@ class WordDatabase:
 
         def mark_error(self, error_rows):
             for sheet_key in error_rows:
+                self.spread.color_reset(sheet_key)
                 self.spread.color_rows(sheet_key, error_rows[sheet_key])
 
     @staticmethod
