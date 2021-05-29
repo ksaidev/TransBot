@@ -30,6 +30,8 @@ class PapagoAPI:
         headers = {'X-Naver-Client-Id': self._CLIENT_ID,
                    'X-Naver-Client-Secret': self._CLIENT_SECRET}
         params = {'source': source, 'target': target, 'text': text}
+
+
         try:
             response = requests.post(request_url, headers=headers, data=params)
 
@@ -37,11 +39,14 @@ class PapagoAPI:
                 result = response.json()
                 return result['message']['result']['translatedText']
 
+            elif response.status_code == 429:
+                return None
+
             else:
                 raise UndefinedError
 
         except requests.HTTPError:
-            return None
+            raise UndefinedError
 
 
     def _switch_id(self):

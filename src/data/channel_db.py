@@ -17,8 +17,8 @@ class ChannelDatabase(Database):
         self.execute(
             f'SELECT status FROM chatroom WHERE chatId={chat_id}'
         )
-        res = self.fetch()[0]
-        return res[0] if res is not None else None
+        res = self.fetch()
+        return res[0][0] if res != [] else None
 
     @Database.connection
     def set_mode(self, chat_id, status):
@@ -26,3 +26,8 @@ class ChannelDatabase(Database):
         self.execute(
             f'UPDATE chatroom SET status={status} WHERE chatId={chat_id}'
         )
+
+
+if __name__ == '__main__':
+    db = ChannelDatabase('../../data/channel.db')
+    print(db.get_mode(166848140054575))
