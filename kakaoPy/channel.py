@@ -32,6 +32,12 @@ class Channel:
     async def sendText(self, msg):
         return await self.sendChat(msg, "{}", 1)
 
+    async def notiRead(self, logId):
+        return await self.writer.sendPacket(packet.Packet(0, 0, "NOTIREAD", 0, bson.encode({
+            "chatId": self.chatId,
+            "watermark": logId
+        })))
+
     async def deleteMessage(self, logId):
         return (await self.writer.sendPacket(packet.Packet(0, 0, "DELETEMSG", 0, bson.encode({
                 "chatId": self.chatId,
