@@ -169,3 +169,8 @@ class ChatManager:
                 await self.send_text(error_message)
 
         await self.send_text(messages.SYNC_COMPLETE)
+
+    @Command()
+    async def restart(self):
+        await self.send_text(messages.RESTART)
+        raise ConnectionResetError

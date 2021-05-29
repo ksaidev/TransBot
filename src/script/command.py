@@ -9,6 +9,7 @@ class CommandType:
     SET_AUTO, SET_MANUAL = 'set_auto', 'set_manual'
     MANUAL_TRANSLATE = 'manual_translate'
     SYNC = 'sync'
+    RESTART = 'restart'
     PLAIN_RESPOND = 'plain_respond'
 
     messages = DoubleDict({
@@ -19,7 +20,8 @@ class CommandType:
     })
 
     admin_messages = DoubleDict({
-        ('동기화', 'sync'): SYNC
+        ('동기화', 'sync'): SYNC,
+        ('재시작', 'restart'): RESTART
     })
 
 
