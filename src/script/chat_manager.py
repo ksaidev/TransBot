@@ -34,7 +34,6 @@ class ChatManager:
             return
 
         command = CommandType.get_type(self.message, self.channel.is_admin())
-        print(command)
         try:
             await self.run_command(command)
         except BotException as error:
