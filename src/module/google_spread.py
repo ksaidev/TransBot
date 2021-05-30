@@ -18,7 +18,6 @@ class GoogleSpread:
         self.key_dir = key_dir
         self.spreadsheet_url = spreadsheet_url
         self.sheet = {}
-        # self._sheet_init()
 
     def _sheet_init(self):
         credentials = ServiceAccountCredentials.from_json_keyfile_name(
@@ -29,16 +28,6 @@ class GoogleSpread:
 
         for sheet_key in self.SHEET_NAME:
             self.sheet[sheet_key] = doc.worksheet(self.SHEET_NAME[sheet_key])
-
-    # def get_data(self):
-    #     # loop = asyncio.get_running_loop()
-    #     # asyncio.set_event_loop(loop)
-    #     return asyncio.run(self.foo())
-    #
-    # async def foo(self):
-    #     return await asyncio.gather(
-    #         *[self.get_data_sheet(sheet_key) for sheet_key in self.SHEET_NAME]
-    #     )
 
     def get_data(self, sheet_key):
         if self.sheet == {}:
