@@ -2,6 +2,7 @@ from src.module.google_spread import GoogleSpread
 from src.module.preprocessor import PreProcessor
 from data.private import GSPREAD_URL
 import json
+import threading
 
 
 class WordDatabase:
@@ -72,7 +73,10 @@ class WordDatabase:
             }
 
             # Get data from sheet 'ksa_words'
+            # target_sheet = {}
+            # ksa_words, target_sheet['ko'], target_sheet['en'] = self.spread.get_data()
             ksa_words = self.spread.get_data('ksa_words')
+
             # TODO : Optimize
             for row in range(len(ksa_words)):
                 error = None
@@ -109,6 +113,7 @@ class WordDatabase:
             # Get data from sheet 'general(ko→en)', 'general(en→ko)'
             for target in ('ko', 'en'):
                 table_name = f'target_{target}'
+                # sheet = target_sheet[target]
                 sheet = self.spread.get_data(table_name)
 
                 for row in range(len(sheet)):
@@ -120,18 +125,20 @@ class WordDatabase:
                     if source_word in data[target]:
                         error_data[table_name][row + self.HEADER_HEIGHT] = source_word
                         continue
-
                     data[target].update({source_word: target_word})
-
             # Marking rows with errors on the sheet
             self.mark_error(error_data)
             return data, error_data
 
 
         def mark_error(self, error_rows):
+            def mark_error_in_sheet(key):
+                self.spread.color_reset(key)
+                self.spread.color_rows(key, error_rows[key])
             for sheet_key in error_rows:
-                self.spread.color_reset(sheet_key)
-                self.spread.color_rows(sheet_key, error_rows[sheet_key])
+                thread = threading.Thread(target=mark_error_in_sheet, args=(sheet_key, ))
+                thread.start()
+
 
     @staticmethod
     def has_jongseong(letter):
@@ -147,14 +154,17 @@ if __name__ == '__main__':
     # db = WordDatabase(dir='words.db')
     # print(db.get_word_data('en'))
 
-    # from pprint import pprint
+    from pprint import pprint
     # # remote testing
-    # db = WordDatabase.Remote(key_dir='C:/Python projects/TransBot/data/remote_db_key.json')
-    # data_, error_data_ = db.get_data()
-    # # pprint(data_)
-    # pprint(error_data_)
+    print('start')
+    db = WordDatabase.Remote(key_dir='C:/Python projects/TransBot/data/remote_db_key.json')
+    print('init complete')
+    data_, error_data_ = db.get_data()
+    # pprint(data_)
+    pprint(error_data_)
 
-    db = WordDatabase()
-    db.pull()
+    # db = WordDatabase()
+    # db.pull()
     # from pprint import pprint
     # pprint(data_)
+
