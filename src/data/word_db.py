@@ -73,8 +73,9 @@ class WordDatabase:
             }
 
             # Get data from sheet 'ksa_words'
-            target_sheet = {}
-            ksa_words, target_sheet['ko'], target_sheet['en'] = self.spread.get_data()
+            # target_sheet = {}
+            # ksa_words, target_sheet['ko'], target_sheet['en'] = self.spread.get_data()
+            ksa_words = self.spread.get_data('ksa_words')
 
             # TODO : Optimize
             for row in range(len(ksa_words)):
@@ -112,7 +113,8 @@ class WordDatabase:
             # Get data from sheet 'general(ko→en)', 'general(en→ko)'
             for target in ('ko', 'en'):
                 table_name = f'target_{target}'
-                sheet = target_sheet[target]
+                # sheet = target_sheet[target]
+                sheet = self.spread.get_data(table_name)
 
                 for row in range(len(sheet)):
                     line = [word.strip() for word in sheet[row]]

@@ -1,6 +1,6 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import asyncio
+# import asyncio
 
 
 class GoogleSpread:
@@ -30,13 +30,17 @@ class GoogleSpread:
         for sheet_key in self.SHEET_NAME:
             self.sheet[sheet_key] = doc.worksheet(self.SHEET_NAME[sheet_key])
 
-    def get_data(self):
-        loop = asyncio.get_event_loop()
-        return loop.run_until_complete(asyncio.gather(
-            *[self.get_data_sheet(sheet_key) for sheet_key in self.SHEET_NAME]
-        ))
+    # def get_data(self):
+    #     # loop = asyncio.get_running_loop()
+    #     # asyncio.set_event_loop(loop)
+    #     return asyncio.run(self.foo())
+    #
+    # async def foo(self):
+    #     return await asyncio.gather(
+    #         *[self.get_data_sheet(sheet_key) for sheet_key in self.SHEET_NAME]
+    #     )
 
-    async def get_data_sheet(self, sheet_key):
+    def get_data(self, sheet_key):
         return self.sheet[sheet_key].get_all_values()[1:]
 
     def color_rows(self, sheet_key, rows):
