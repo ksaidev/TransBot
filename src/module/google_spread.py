@@ -1,47 +1,57 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-
+# import asyncio
 
 
 class GoogleSpread:
-    scope = [
+    SCOPE = [
         'https://spreadsheets.google.com/feeds',
         'https://www.googleapis.com/auth/drive',
     ]
+    SHEET_NAME = {
+        'ksa_words': 'ksa_words',
+        'target_ko': 'general(en→ko)',
+        'target_en': 'general(en→ko)'
+    }
 
     def __init__(self, key_dir, spreadsheet_url):
         self.key_dir = key_dir
         self.spreadsheet_url = spreadsheet_url
+        self.sheet = {}
+        self._sheet_init()
 
-
-    def _get_sheet(self, sheet_key):
-        sheet_name = {'ksa_words': 'ksa_words',
-                      'target_ko': 'general(en→ko)',
-                      'target_en': 'general(en→ko)'}
-        assert sheet_key in sheet_name
+    def _sheet_init(self):
         credentials = ServiceAccountCredentials.from_json_keyfile_name(
-            self.key_dir, self.scope
+            self.key_dir, self.SCOPE
         )
         gc = gspread.authorize(credentials)
         doc = gc.open_by_url(self.spreadsheet_url)
 
-        return doc.worksheet(sheet_name[sheet_key])
+        for sheet_key in self.SHEET_NAME:
+            self.sheet[sheet_key] = doc.worksheet(self.SHEET_NAME[sheet_key])
+
+    # def get_data(self):
+    #     # loop = asyncio.get_running_loop()
+    #     # asyncio.set_event_loop(loop)
+    #     return asyncio.run(self.foo())
+    #
+    # async def foo(self):
+    #     return await asyncio.gather(
+    #         *[self.get_data_sheet(sheet_key) for sheet_key in self.SHEET_NAME]
+    #     )
 
     def get_data(self, sheet_key):
-        sheet = self._get_sheet(sheet_key)
-        return sheet.get_all_values()[1:]
+        return self.sheet[sheet_key].get_all_values()[1:]
 
     def color_rows(self, sheet_key, rows):
-        sheet = self._get_sheet(sheet_key)
         color = {"red": 1, "green": 0.9, "blue": 0.9}
         for row in rows:
-            sheet.format(
+            self.sheet[sheet_key].format(
                 f'A{row}:D{row}', {'backgroundColor': color}
             )
 
     def color_reset(self, sheet_key):
-        sheet = self._get_sheet(sheet_key)
-        sheet.format(
+        self.sheet[sheet_key].format(
             f'A2:D',
             {"backgroundColor": {"red": 1, "green": 1, "blue": 1}}
         )
