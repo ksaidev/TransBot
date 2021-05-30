@@ -18,7 +18,7 @@ class GoogleSpread:
         self.key_dir = key_dir
         self.spreadsheet_url = spreadsheet_url
         self.sheet = {}
-        self._sheet_init()
+        # self._sheet_init()
 
     def _sheet_init(self):
         credentials = ServiceAccountCredentials.from_json_keyfile_name(
@@ -41,6 +41,8 @@ class GoogleSpread:
     #     )
 
     def get_data(self, sheet_key):
+        if self.sheet == {}:
+            self._sheet_init()
         return self.sheet[sheet_key].get_all_values()[1:]
 
     def color_rows(self, sheet_key, rows):
