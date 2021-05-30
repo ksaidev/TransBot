@@ -8,6 +8,7 @@ from data.private import KAKAO_ID, KAKAO_PW
 class RootClient(client.Client):
     async def onMessage(self, chat):
         await ChatManager(chat).respond()
+        await chat.read()
 
     async def onJoin(self, packet, channel):
         await ChannelManager(channel).respond()
