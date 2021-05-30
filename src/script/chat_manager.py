@@ -18,7 +18,6 @@ class ChatManager:
 
     def __init__(self, chat):
         self.channel = ChannelManager(chat.channel)
-        self.chat = chat
         self.message = chat.message
         self.type = chat.type
         self.attachment = chat.attachment['src_message'] if chat.type == 26 else None
@@ -128,9 +127,6 @@ class ChatManager:
             translated_text = self.translator.translate(self.message)
             header = '[Auto Translation]\n'
             await self.send_text(header + translated_text)
-        else:
-            await self.chat.read()
-
 
     @Command()
     async def manual_translate(self):
