@@ -4,8 +4,8 @@ import json
 
 Agent = "win32"
 Lang = "ko"
-Version = "3.1.1"
-AppVersion = "3.1.1.2441"
+Version = "9.3.6"
+AppVersion = "9.3.6"
 OsVersion = "10.0"
 
 AuthHeader = "{agent}/{version}/{lang}".format(
