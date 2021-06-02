@@ -6,14 +6,14 @@ import re
 class Translator:
     def __init__(self):
         self.api = PapagoAPI()
-        self.replacer = Replacer()
 
     def translate(self, text):
         target = 'en' if self._is_korean_text(text) else 'ko'
 
-        preprocessed_text = self.replacer.preprocess(text, target)
+        replacer = Replacer(target)
+        preprocessed_text = replacer.preprocess(text)
         translated_text = self.api.get_translated_text(preprocessed_text, target)
-        postprocessed_text = self.replacer.postprocess(translated_text, target)
+        postprocessed_text = replacer.postprocess(translated_text)
 
         return postprocessed_text
 
@@ -29,7 +29,6 @@ class Translator:
         Determined by comparing the number of words in each language
         """
         words = text.split()
-        total = len(words)
         kor_count = 0
         eng_count = 0
 

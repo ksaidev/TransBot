@@ -36,6 +36,13 @@ class ApiLimitExceeded(BotException):
     def __init__(self):
         super().__init__(messages.ERROR_API_LIMIT_EXCEEDED)
 
+class KeywordTranslationError(BotException):
+    """
+    An error raised when the keyword match is not found during postprocessing
+    """
+    def __init__(self):
+        super().__init__(messages.ERROR_KEYWORD_UNMATCHED)
+
 class UndefinedError(BotException):
     """
     An error to wrap undefined general exceptions
