@@ -52,4 +52,4 @@ class ChannelManager:
         return self.chat_id in ADMIN_CHANNEL
 
     async def send_text(self, message):
-        await self.channel.sendText(message)
+        await self.channel.send_text(message)
