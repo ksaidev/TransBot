@@ -43,5 +43,11 @@ ERROR_MSG_UNSELECTED = "번역할 메시지를 선택해 주세요.\n" \
 ERROR_API_LIMIT_EXCEEDED = "PAPAGO API 일일 사용량이 초과되었습니다.\n" \
                            "PAPAGO API daily limit exceeded"
 
+ERROR_KEYWORD_UNMATCHED = "[KeywordTranslationError]\n" \
+                          "이 메시지를 보게 된 경우 개발자에게 문의해 주세요.\n" \
+                          "If you see this message, please contact us.\n" \
+                          "https://open.kakao.com/o/guuCsced"
+
 ERROR_UNDEFINED = "알 수 없는 오류가 발생했습니다. 개발자에게 문의해 주세요.\n" \
-                  "An undefined error has occurred. Please contact the developers."
+                  "An undefined error has occurred. Please contact us\n" \
+                  "https://open.kakao.com/o/guuCsced"
