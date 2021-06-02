@@ -1,5 +1,6 @@
 from src.module.google_spread import GoogleSpread
-from src.module.preprocessor import PreProcessor
+# from src.module.preprocessor import PreProcessor
+from src.module.replacer import Replacer
 from data.private import GSPREAD_URL
 import json
 import threading
@@ -9,18 +10,20 @@ class WordDatabase:
     def __init__(self, db_dir='data/words.json'):
         self.dir = db_dir
         self.remote = self.Remote()
-        self.data = {'ko': [], 'en': []}
+        self.load()
 
     def load(self):
         try:
             with open(self.dir, 'r') as f:
-                self.data = json.load(f)
+                data = json.load(f)
+            Replacer.set_keyword_data(data)
         except json.decoder.JSONDecodeError:
             pass
 
     def save(self):
+        data = Replacer.get_keyword_data()
         with open(self.dir, 'w') as f:
-            json.dump(self.data, f, indent=None)
+            json.dump(data, f, indent=None)
 
     def pull(self):
         """
@@ -30,23 +33,8 @@ class WordDatabase:
         remote_data, error_data = self.remote.get_data()
 
         for target in remote_data:
-            preprocess_generator = PreProcessor()
-            postprocess = [''] * len(remote_data[target])
-
-            index = 0
-            for source_word in remote_data[target]:
-                target_word = remote_data[target][source_word]
-
-                trailer = 'r' if self.has_jongseong(target_word[-1]) else 'a'
-                key = f'${index}{trailer}$'
-                preprocess_generator.add_keyword(source_word, key)
-
-                postprocess[index] = target_word
-
-                index += 1
-
-            preprocess = preprocess_generator.get_keyword_data()
-            self.data[target] = [preprocess, postprocess]
+            for pair in remote_data[target].items():
+                Replacer.add_keyword(pair, target)
 
         self.save()
         return error_data
