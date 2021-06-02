@@ -64,7 +64,7 @@ class Replacer:
         def index_generator():
             generated = set()
             while True:
-                index = random.randrange(10**3, 10**4)
+                index = random.randrange(10**2, 10**3)
                 if index not in generated:
                     yield index
                     generated.add(index)
