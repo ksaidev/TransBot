@@ -1,8 +1,8 @@
 # from kakaoPy import client
 from KakaoBot.kakaopy.client import Client
-from src.script.chat_manager import ChatManager
-from src.script.channel_manager import ChannelManager
-from src.script.logging import Logging
+from src.bot.responder.chat import ChatResponder
+from src.bot.responder.channel import ChannelResponder
+from src.bot.logging import Logging
 
 from data.private import KAKAO_ID, KAKAO_PW, DEVICE_NAME, DEVICE_UUID
 
@@ -10,10 +10,10 @@ from data.private import KAKAO_ID, KAKAO_PW, DEVICE_NAME, DEVICE_UUID
 class BotClient(Client):
     async def on_message(self, chat):
         await chat.read()
-        await ChatManager(chat).respond()
+        await ChatResponder(chat).respond()
 
     async def on_join(self, packet, channel):
-        await ChannelManager(channel).respond()
+        await ChannelResponder(channel).respond()
 
 def run():
     bot = BotClient(DEVICE_NAME, DEVICE_UUID)

@@ -2,7 +2,7 @@ from src.data.channel_db import ChannelDatabase
 from data.private import ADMIN_CHANNEL
 from src.constants import messages
 
-class ChannelManager:
+class ChannelResponder:
     """
     An object for managing channels
     Called directly on join and included in chat object as instance variable on message
