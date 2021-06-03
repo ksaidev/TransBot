@@ -58,7 +58,7 @@ class ChatManager:
         """
         Checks if the message type is translatable
         """
-        if self.message == '':
+        if type(self.message) != str or self.message == '':
             return False
         return True if self.type in (1, 20, 26) else False
 
