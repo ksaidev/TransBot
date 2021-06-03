@@ -1,4 +1,4 @@
-from src.script.exceptions import KeywordTranslationError
+from src.bot.exceptions import KeywordTranslationError
 
 import string
 import re

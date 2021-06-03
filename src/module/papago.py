@@ -1,6 +1,6 @@
 import requests
 from data.private import PAPAGO_KEYS
-from src.script.exceptions import ApiLimitExceeded, UndefinedError
+from src.bot.exceptions import ApiLimitExceeded, UndefinedError
 
 
 class PapagoAPI:

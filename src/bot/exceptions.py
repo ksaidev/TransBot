@@ -1,6 +1,6 @@
 from src.constants import messages
 from src.constants.mode import Mode
-from src.script.logging import Logging
+from src.bot.logging import Logging
 
 
 class BotException(Exception):
