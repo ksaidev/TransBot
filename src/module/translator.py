@@ -1,5 +1,6 @@
 from src.module.papago import PapagoAPI
 from src.module.replacer import Replacer
+from src.bot.exceptions import KeywordTranslationError
 import re
 
 
@@ -10,12 +11,17 @@ class Translator:
     def translate(self, text):
         target = 'en' if self._is_korean_text(text) else 'ko'
 
-        replacer = Replacer(target)
-        preprocessed_text = replacer.preprocess(text)
-        translated_text = self.api.get_translated_text(preprocessed_text, target)
-        postprocessed_text = replacer.postprocess(translated_text)
-
-        return postprocessed_text
+        for _ in range(3):
+            try:
+                replacer = Replacer(target)
+                preprocessed_text = replacer.preprocess(text)
+                translated_text = self.api.get_translated_text(preprocessed_text, target)
+                postprocessed_text = replacer.postprocess(translated_text)
+            except IndexError:
+                pass
+            else:
+                return postprocessed_text
+        raise KeywordTranslationError
 
 
     @staticmethod
