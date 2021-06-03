@@ -1,7 +1,7 @@
-from src.script.logging import Logging
+from src.bot.logging import Logging
 import os
 import sys
-from src.script import main
+from src import main
 
 print('')
 Logging.console('Server start')

@@ -1,5 +1,6 @@
 from src.constants import messages
 from src.constants.mode import Mode
+from src.bot.logging import Logging
 
 
 class BotException(Exception):
@@ -34,6 +35,7 @@ class ApiLimitExceeded(BotException):
     An error raised when the Papago API limit is exceeded
     """
     def __init__(self):
+        Logging.console('API limit exceeded')
         super().__init__(messages.ERROR_API_LIMIT_EXCEEDED)
 
 class KeywordTranslationError(BotException):
@@ -41,6 +43,7 @@ class KeywordTranslationError(BotException):
     An error raised when the keyword match is not found during postprocessing
     """
     def __init__(self):
+        Logging.console('Keyword translation error')
         super().__init__(messages.ERROR_KEYWORD_UNMATCHED)
 
 class UndefinedError(BotException):
@@ -48,4 +51,5 @@ class UndefinedError(BotException):
     An error to wrap undefined general exceptions
     """
     def __init__(self):
+        Logging.console('Undefined error')
         super().__init__(messages.ERROR_UNDEFINED)
