@@ -12,7 +12,7 @@ class ChannelManager:
 
     def __init__(self, channel):
         self.channel = channel
-        self.chat_id = channel.chatId
+        self.chat_id = channel.chat_id
 
     async def respond(self):
         """
