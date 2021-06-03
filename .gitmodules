@@ -1,0 +1,3 @@
+[submodule "KakaoBot"]
+	path = KakaoBot
+	url = https://github.com/ksaidev/KakaoBot.git
