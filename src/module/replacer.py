@@ -1,5 +1,3 @@
-from src.bot.exceptions import KeywordTranslationError
-
 import string
 import re
 import random
@@ -288,7 +286,7 @@ class Replacer:
             elif key[:-1] in replaced_text:
                 replaced_text = replaced_text.replace(key[:-1], self.replaced[key], 1)
             else:
-                raise KeywordTranslationError
+                raise IndexError
         return replaced_text
 
 
