@@ -1,13 +1,13 @@
-from src.script.command import CommandType
-from src.script.channel_manager import ChannelManager
-from src.script.exceptions import BotException, ModeSetError, ManualSelectionError
+from src.bot.command import CommandType
+from src.bot.responder.channel import ChannelResponder
+from src.bot.exceptions import BotException, ModeSetError, ManualSelectionError
 from src.constants import messages
 from src.constants.mode import Mode
-from src.script.translator import Translator
+from src.module.translator import Translator
 from src.data.word_db import WordDatabase
 
 
-class ChatManager:
+class ChatResponder:
     """
     An object generated for each message received for
     registration, managing current modes, and replying, etc.
@@ -17,7 +17,7 @@ class ChatManager:
     database = WordDatabase()
 
     def __init__(self, chat):
-        self.channel = ChannelManager(chat.channel)
+        self.channel = ChannelResponder(chat.channel)
         self.message = chat.message
         self.type = chat.type
         self.attachment = chat.attachment['src_message'] if chat.type == 26 else None
@@ -58,7 +58,7 @@ class ChatManager:
         """
         Checks if the message type is translatable
         """
-        if self.message == '':
+        if type(self.message) != str or self.message == '':
             return False
         return True if self.type in (1, 20, 26) else False
 

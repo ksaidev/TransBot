@@ -1,4 +1,4 @@
-from src.module.doubledict import DoubleDict
+from src.module.data_struct import DoubleDict
 
 
 class CommandType:
