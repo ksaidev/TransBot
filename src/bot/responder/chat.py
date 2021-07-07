@@ -17,6 +17,7 @@ class ChatResponder:
     database = WordDatabase()
 
     def __init__(self, chat):
+        self.chat = chat
         self.channel = ChannelResponder(chat.channel)
         self.message = chat.message
         self.type = chat.type
@@ -169,3 +170,7 @@ class ChatResponder:
     async def restart(self):
         await self.send_text(messages.RESTART)
         raise ConnectionResetError
+
+    @Command()
+    async def leave(self):
+        await self.chat.channel.leaveChannel()

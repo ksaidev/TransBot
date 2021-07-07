@@ -11,12 +11,14 @@ class CommandType:
     SYNC = 'sync'
     RESTART = 'restart'
     PLAIN_RESPOND = 'plain_respond'
+    LEAVE = 'leave'
 
     messages = DoubleDict({
         ('도움말',): HELP_KO, ('help',): HELP_EN,
         ('자동', 'auto', 'ㅈ', 'a'): SET_AUTO,
         ('수동', 'manual', 'ㅅ', 'm'): SET_MANUAL,
         ('번역', 'translate', 'ㅂ', 'tr'): MANUAL_TRANSLATE,
+        ('나가기', 'leave'): LEAVE,
     })
 
     admin_messages = DoubleDict({
