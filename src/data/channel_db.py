@@ -13,6 +13,12 @@ class ChannelDatabase(Database):
         )
 
     @Database.connection
+    def delete_channel(self, chat_id):
+        self.execute(
+            f'DELETE FROM chatroom WHERE chatId={chat_id}'
+        )
+
+    @Database.connection
     def get_mode(self, chat_id):
         self.execute(
             f'SELECT status FROM chatroom WHERE chatId={chat_id}'

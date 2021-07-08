@@ -5,6 +5,7 @@ from src.constants import messages
 from src.constants.mode import Mode
 from src.module.translator import Translator
 from src.data.word_db import WordDatabase
+from data.channel_db import ChannelDatabase
 
 
 class ChatResponder:
@@ -173,4 +174,6 @@ class ChatResponder:
 
     @Command()
     async def leave(self):
-        await self.chat.channel.leaveChannel()
+        db = ChannelDatabase()
+        db.delete_channel(self.chat.channel.chat_id)
+        await self.chat.channel.leave()
